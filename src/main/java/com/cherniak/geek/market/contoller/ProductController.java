@@ -26,10 +26,6 @@ public class ProductController {
     }
 
     @GetMapping
-//    public String findAllProducts(Model model) {
-//        List<Product> products = productService.findAll();
-//        model.addAttribute("products", products);
-//        return "products";
     public String findPageOfProducts(Model model, @RequestParam(defaultValue = "0") Integer page,
                                      @RequestParam(defaultValue = "5") Integer size) {
 
@@ -49,7 +45,7 @@ public class ProductController {
     }
 
     @GetMapping("/{param}")
-    public String secondRequest(Model model, @PathVariable String param) {
+    public String minMaxRequest(Model model, @PathVariable String param) {
         List<Product> products;
         switch (param) {
             case "min":
@@ -68,18 +64,27 @@ public class ProductController {
         return "products";
     }
 
-//    @GetMapping
-//    public String findPageOfProducts(Model model, @RequestParam Integer page, @RequestParam Integer size) {
-//
-//        if (page == null || page < 1) {
-//            return "redirect:/products";
-//        } else {
-//            Page<Product> products = productService.findPage(page - 1, size);
-//            model.addAttribute("products", products);
-//            return "products";
-//        }
-//    }
+    @GetMapping("/filter")
+    public String filterRequest(Model model, @RequestParam Integer min,
+                                @RequestParam Integer max) {
 
+        if (min == null || min < 0) {
+            min = 0;
+        }
+        model.addAttribute("min", min);
+        model.addAttribute("max", max);
+
+        if (max == null || max < min) {
+            model.addAttribute("max", "");
+            max = Integer.MAX_VALUE;
+        }
+        List<Product> products = productService.filterCost(min, max);
+        model.addAttribute("products", products);
+
+        return "products";
+    }
 }
+
+
 
 
