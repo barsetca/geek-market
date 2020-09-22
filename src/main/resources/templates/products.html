@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Каталог продуктов</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="container">
+    <h1>Таблица продуктов</h1>
+    Всего продуктов в базе <text th:text="${count}"/>
+    <span th:if="${products.isEmpty()}">Продуктов нет</span>
+    <h4>Постраничный вывод</h4>
+
+    <form method="GET" th:action="@{/products}">
+        № страницы <input type="number" name="page" placeholder="Введите № страницы" th:value="${page}">
+        Количество на странице <input type="number" name="size" placeholder="5 по умолчанию" th:value="${size}">
+        <button class="btn btn-primary" type="submit">Постранично</button>
+        <a th:href="@{'/products/'}" class="btn btn-info" role="button">Полный список</a>
+    </form>
+    Фильтровать:
+    <a th:href="@{'/products/' + ${'min'}}">Минимальная цена</a> /
+    <a th:href="@{'/products/' + ${'max'}}">Максимальная цена</a> /
+    <a th:href="@{'/products/' + ${'minmax'}}">Минимальная и Максимальная цена</a> /
+    <a th:href="@{'/products/'}">Полный список</a>
+    <br/>
+    <br/>
+    <table class="table" th:if="${!products.isEmpty()}">
+
+        <thead>
+        <tr>
+            <td>ID</td>
+            <td>Название</td>
+            <td>Цена</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="p : ${products}">
+            <td th:text="${p.id}"/>
+            <td th:text="${p.title}"/>
+            <td th:text="${p.cost}"/>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+</body>
+</html>
