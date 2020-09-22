@@ -1,0 +1,9 @@
+DROP TABLE IF EXISTS products;
+
+CREATE TABLE IF NOT EXISTS products
+(
+    id    bigint AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) UNIQUE NOT NULL,
+    cost  INTEGER
+);
+
