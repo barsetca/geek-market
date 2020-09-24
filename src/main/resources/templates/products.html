@@ -21,7 +21,6 @@
     <form method="GET" th:action="@{/products}">
 
         Количество на странице <input type="number" name="size" th:value="${param.size == null ? 5 : param.size}" th:default="5">
-        <span  th:text="${'Всего страниц: ' + products.getTotalPages()}"></span>
         <h4>Фильрация:</h4>
         <div class="form-group col-md-6">
             <label for="titlePart">Название содержит</label>
@@ -59,14 +58,30 @@
     </table>
 
 
-    <nav aria-label="Page navigation">
+    <nav aria-label="Page navigation" th:if="${products.totalPages gt 0} ">
         <ul class="pagination">
             <li class="page-item" th:classappend="${products.isFirst() ? 'disabled' : ''}">
             <a class="page-link" th:href="@{'/products?page='+ ${products.previousOrFirstPageable().getPageNumber()+1} + ${filterDefinition}}">Назад</a>
             </li>
+            <li class="page-item enabled" th:if="${products.number > 2}">
+                <a class="page-link" th:href="@{'/products?page=1' + ${filterDefinition}}">1</a>
+            </li>
+            <li class="page-item enabled" th:if="${products.number > 2}">
+                <a class="page-link svg-icon" th:href="@{'/products?page=' + ${products.number - 4} + ${filterDefinition}}">...</a>
+            </li>
             <li class="page-item" th:classappend="${products.getNumber() + 1 == i ? 'active' : ''}"
-                th:each="i : ${#numbers.sequence(1, products.getTotalPages())}">
+                th:each="i : ${#numbers.sequence((products.number < 2 ? 1 : products.number - 1),
+                (products.getTotalPages() < 6 ? products.getTotalPages() :
+                (products.number < products.getTotalPages() - 2 ? products.number + 3: products.getTotalPages())))}">
                 <a class="page-link" th:text="${i}" th:href="@{'/products?page=' + ${i} + ${filterDefinition}}"></a>
+            </li>
+            <li class="page-item enabled" th:if="${products.number < products.totalPages - 3 }">
+                <a class="page-link svg-icon" th:href="@{'/products?page=' + ${products.number + 4} + ${filterDefinition}}">...</a>
+            </li>
+            <li class="page-item enabled" th:if="${products.number < products.totalPages - 3 }">
+                <a class="page-link" th:href="@{'/products?page=' + ${products.getTotalPages()} + ${filterDefinition}}">
+                    <span  th:text="${products.getTotalPages()}"></span>
+                </a>
             </li>
 
             <li class="page-item" th:classappend="${products.isLast() ? 'disabled' : ''}">
