@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Изменить товар</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="container">
+    <h2>Изменить продукт</h2>
+    <form method="POST" th:action="@{/products/update_product}">
+        <div class="form-row">
+            <div class="col">
+                <label for="idProduct">ID</label>
+                <input type="number" readonly name="id" class="form-control" id="idProduct" th:value="${product.id}">
+            </div>
+            <div class="col">
+                <label for="titleProduct">Название</label>
+                <input type="text" name="title" class="form-control" id="titleProduct" th:value="${product.title}">
+            </div>
+            <div class="col">
+                <label for="costProduct">Цена</label>
+                <input type="namber" name="cost" class="form-control" id="costProduct" th:value="${product.cost}">
+            </div>
+        </div>
+        <br/>
+        <button class="btn btn-primary" type="submit">Изменить</button>
+        <a th:href="@{'/products/'}" class="btn btn-success" role="button">Отмена</a>
+    </form>
+</div>
+</body>
+</html>

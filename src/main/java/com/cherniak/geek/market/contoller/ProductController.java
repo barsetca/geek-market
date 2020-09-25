@@ -9,9 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -57,45 +55,18 @@ public class ProductController {
         return "products";
     }
 
-//    @GetMapping("/{param}")
-//    public String minMaxRequest(Model model, @PathVariable String param) {
-//        List<Product> products;
-//        switch (param) {
-//            case "min":
-//                products = productService.findAllMinCost();
-//                break;
-//            case "max":
-//                products = productService.findAllMaxCost();
-//                break;
-//            case "minmax":
-//                products = productService.findAllMinMaxCost();
-//                break;
-//            default:
-//                throw new ResourceNotFoundException("Unknown PathVariable");
-//        }
-//        model.addAttribute("products", products);
-//        return "products";
-//    }
+    @PostMapping("/update_product")
+    public String save(@RequestParam Long id, @RequestParam String title, @RequestParam int cost) {
+        productService.save(new Product(id, title, cost));
+        return "redirect:/products";
+    }
 
-//    @GetMapping("/filter")
-//    public String filterRequest(Model model, @RequestParam Integer min,
-//                                @RequestParam Integer max) {
-//
-//        if (min == null || min < 0) {
-//            min = 0;
-//        }
-//        model.addAttribute("min", min);
-//        model.addAttribute("max", max);
-//
-//        if (max == null || max < min) {
-//            model.addAttribute("max", "");
-//            max = Integer.MAX_VALUE;
-//        }
-//        List<Product> products = productService.filterCost(min, max);
-//        model.addAttribute("products", products);
-//
-//        return "products";
-//    }
+    @GetMapping("/update_product/{id}")
+    public String update(Model model, @PathVariable Long id) {
+        model.addAttribute("product" , productService.getById(id));
+        return "edit";
+    }
+
 }
 
 
