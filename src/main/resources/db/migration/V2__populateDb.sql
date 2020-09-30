@@ -80,8 +80,7 @@ VALUES ('Product1', 100),
        ('Product80', 10);
 
 INSERT INTO customers (name)
-VALUES
-       ('Joric'),
+VALUES ('Joric'),
        ('Doric');
 
 

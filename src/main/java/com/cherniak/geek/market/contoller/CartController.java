@@ -37,4 +37,22 @@ public class CartController {
         response.sendRedirect(request.getHeader("referer"));
     }
 
+    @GetMapping("/inc/{product_id}")
+    public String incrementProduct(@PathVariable(name = "product_id") Long productId) {
+        cart.increment(productId);
+        return "redirect:/cart";
+
+    }
+
+    @GetMapping("/dec/{product_id}")
+    public String removeOrDecrementProduct(@PathVariable(name = "product_id") Long productId) {
+        cart.removeOrDecrement(productId);
+        return "redirect:/cart";
+    }
+
+    @GetMapping("/remove/{product_id}")
+    public String removeProduct(@PathVariable(name = "product_id") Long productId) {
+        cart.remove(productId);
+        return "redirect:/cart";
+    }
 }

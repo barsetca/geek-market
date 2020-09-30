@@ -19,15 +19,12 @@
                 <li class="nav-item" th:classappend="${activeTab == 'Products' ? 'active' : ''}">
                     <a class="nav-link" th:href="@{/products}">Продукты</a>
                 </li>
-<!--                <li class="nav-item" th:classappend="${activeTab == 'Cart' ? 'active' : ''}">-->
-<!--                    <a class="nav-link" th:href="@{/cart}" th:text="'Корзина (' + ${@cart.items.size()} + ')'"/>-->
-<!--                </li>-->
                 <li class="nav-item" th:classappend="${activeTab == 'Cart' ? 'active' : ''}">
-                    <a class="nav-link" th:href="@{/cart}">Корзина</a>
+                    <a class="nav-link" th:href="@{/cart}" th:text="'Корзина (' + ${@cart.totalQuantity} + ')'"/>
                 </li>
-<!--                <li class="nav-item" th:classappend="${activeTab == 'Orders' ? 'active' : ''}">-->
-<!--                    <a class="nav-link" th:href="@{/orders}">Заказы</a>-->
-<!--                </li>-->
+                <li class="nav-item" th:classappend="${activeTab == 'Orders' ? 'active' : ''}">
+                    <a class="nav-link" th:href="@{/orders}">Заказы</a>
+                </li>
             </ul>
         </div>
     </nav>

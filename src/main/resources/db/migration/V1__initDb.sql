@@ -12,26 +12,26 @@ CREATE TABLE IF NOT EXISTS products
 
 CREATE TABLE IF NOT EXISTS customers
 (
-    id    bigserial PRIMARY KEY,
+    id   bigserial PRIMARY KEY,
     name VARCHAR(255) UNIQUE NOT NULL
 );
 
 
 CREATE TABLE IF NOT EXISTS orders
 (
-    id    bigserial PRIMARY KEY,
-    cost  INTEGER,
-    customer_id bigint references customers(id)
+    id          bigserial PRIMARY KEY,
+    cost        INTEGER,
+    customer_id bigint references customers (id)
 );
 
 CREATE TABLE IF NOT EXISTS order_items
 (
-    id    bigserial PRIMARY KEY,
-    cost  INTEGER,
-    total_cost  INTEGER,
-    quantity INTEGER,
-    product_id bigint references products(id),
-    order_id bigint references orders(id)
+    id         bigserial PRIMARY KEY,
+    cost       INTEGER,
+    total_cost INTEGER,
+    quantity   INTEGER,
+    product_id bigint references products (id),
+    order_id   bigint references orders (id)
 );
 
 

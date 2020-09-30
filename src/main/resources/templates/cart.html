@@ -11,18 +11,17 @@
 
 <body>
 <div class="container">
-    <div th:replace="~{navigation :: navigation(Cart)}" />
+    <div th:replace="~{navigation :: navigation(Cart)}"/>
     <h1>Корзина</h1>
     <br/>
-    <!--    <span th:if="${@cart.items.isEmpty()}">Корзина пуста</span>-->
-    <!--    <table th:if="${!@cart.items.isEmpty()}" class="table table-hover">-->
-    <table class="table table-hover">
+    <span th:if="${@cart.items.isEmpty()}">Корзина пуста</span>
+    <table th:if="${!@cart.items.isEmpty()}" class="table table-hover">
         <thead class="thead-light">
         <tr>
 
             <th>Название</th>
-            <th>Количество</th>
             <th>Цена</th>
+            <th>Количество</th>
             <th>Итого</th>
             <th>Действие</th>
         </tr>
@@ -30,13 +29,22 @@
         <tbody>
         <tr th:each="io:${@cart.items}">
             <td th:text="${io.product.title}"/>
-            <td th:text="${io.quantity}"/>
             <td th:text="${io.cost}"/>
+            <td>
+                <a th:href="@{'/cart/dec/' + ${io.product.id}}"><b> [-] </b></a>
+                <a th:text="${io.quantity}"></a>
+                <a th:href="@{'/cart/inc/' + ${io.product.id}}"><b> [+] </b></a>
+                </a>
             <td th:text="${io.totalCost}"/>
             <td>
-                <a class="btn btn-success" th:href="@{'/cart'}">Изменить</a>
+                <a class="btn btn-danger" th:href="@{'/cart/remove/' + ${io.product.id}}">Удалить</a>
             </td>
-
+        </tr>
+        <tr>
+            <td></td>
+            <td>Итого</td>
+            <td th:text="${@cart.totalQuantity}"></td>
+            <td th:text="${@cart.price}"></td>
         </tr>
         </tbody>
 

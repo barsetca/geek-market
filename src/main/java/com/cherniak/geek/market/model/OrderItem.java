@@ -33,21 +33,20 @@ public class OrderItem {
     @JoinColumn(name = "order_id")
     private Order order;
 
-    public OrderItem(Product product){
+    public OrderItem(Product product) {
         this.product = product;
         this.quantity = 1;
         this.cost = product.getCost();
-        this.totalCost=product.getCost();
+        this.totalCost = product.getCost();
     }
+
     public void incrementQuantity() {
         quantity++;
-        totalCost = product.getCost()*quantity;
-
+        totalCost = product.getCost() * quantity;
     }
 
     public void decrementQuantity() {
         quantity--;
-        totalCost = product.getCost()*quantity;
-
+        totalCost = product.getCost() * quantity;
     }
 }
