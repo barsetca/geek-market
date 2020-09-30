@@ -1,6 +1,5 @@
 package com.cherniak.geek.market.service;
 
-import com.cherniak.geek.market.exception.ResourceNotFoundException;
 import com.cherniak.geek.market.model.Product;
 import com.cherniak.geek.market.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +29,4 @@ public class ProductService {
         return productRepository.save(product);
     }
 
-
-public Product getById (Long id){
-       return productRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Продукт id = " + id + "не существует"));
-}
 }
