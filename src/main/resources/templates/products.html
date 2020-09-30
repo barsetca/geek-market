@@ -15,38 +15,46 @@
 
 <div class="container">
     <h1>Каталог товаров</h1>
+
     <span th:if="${products.isEmpty()}">Продуктов нет</span>
-    <h4>Постраничный вывод</h4>
-
     <form method="GET" th:action="@{/products}">
-        № страницы <input type="number" name="page" placeholder="Введите № страницы" th:value="${page}">
-        Количество на странице <input type="number" name="size" placeholder="5 по умолчанию" th:value="${size}">
-        <button class="btn btn-primary" type="submit">Постранично</button>
-        <a th:href="@{'/products/'}" class="btn btn-info" role="button">Полный список</a>
-    </form>
-    <h4>Фильрация:</h4>
-    <a th:href="@{'/products/' + ${'min'}}" class="btn btn-secondary" role="button">Min цена</a>
-    <a th:href="@{'/products/' + ${'max'}}" class="btn btn-secondary" role="button">Max цена</a>
-    <a th:href="@{'/products/' + ${'minmax'}}" class="btn btn-secondary" role="button">MinMax цена</a>
-    <a th:href="@{'/products/'}" class="btn btn-secondary" role="button">Все</a>
+        <h4>Фильрация:</h4>
+        <div class="form-row col-md-9">
+            <label for="titlePart">Название содержит</label>
+            <input class="form-control" th:value="${param.title == null ? null:param.title}" name="title"
+                   type="text" id="titlePart">
 
-    <hr/>
-
-    <form method="GET" th:action="@{/products/filter}">
-        Цена от: <input type="number" name="min" placeholder="0 - по умолчанию" th:value="${min}">
-        Цена до: <input type="number" name="max" placeholder="Введите макс. цену" th:value="${max}">
-        <button class="btn btn-success" type="submit">Фильтровать</button>
-        <a th:href="@{'/products/'}" class="btn btn-primary" role="button">Сбросить фильтр</a>
+            <div class="form-row">
+                <div class="col">
+                    <label for="minCost">Минимальная цена</label>
+                    <input class="form-control" th:value="${param.min_cost}" name="min_cost" type="number" id="minCost">
+                </div>
+                <div class="col">
+                    <label for="maxCost">Максимальная цена</label>
+                    <input class="form-control" th:value="${param.max_cost}" name="max_cost" type="number" id="maxCost">
+                </div>
+                <div class="col">
+                    <label for="size">Количество на странице</label>
+                    <input class="form-control" th:value="${param.size == null ? 5 : param.size}" name="size"
+                           type="number"
+                           id="size">
+                </div>
+            </div>
+        </div>
+        <br/>
+        <button class="btn btn-primary" type="submit">Применить</button>
+        <a th:href="@{'/products/'}" class="btn btn-success" role="button">Сбросить</a>
     </form>
     <br/>
-    <br/>
+
     <table class="table table-hover" th:if="${!products.isEmpty()}">
 
-        <thead class="thead-dark">
+        <thead class="thead-light">
         <tr>
             <th>ID</th>
             <th>Название</th>
             <th>Цена</th>
+            <th>Действие</th>
         </tr>
         </thead>
         <tbody>
@@ -54,10 +62,94 @@
             <td th:text="${p.id}"/>
             <td th:text="${p.title}"/>
             <td th:text="${p.cost}"/>
+            <td>
+                <a data-toggle="modal" href="#productEditModal" class="btn btn-success"
+                   th:data-id="${p.id}" th:data-title="${p.title}" th:data-cost="${p.cost}">Изменить</a>
+                <script>
+                    $(document).on("click", "a[href='#productEditModal']", function () {
+                        var pId = $(this).data('id');
+                        var pTitle = $(this).data('title');
+                        var pCost = $(this).data('cost');
+
+                        $(".modal-body #idProduct").val(pId);
+                        $(".modal-body #titleProduct").val(pTitle);
+                        $(".modal-body #costProduct").val(pCost);
+
+                    });
+                </script>
+
+                <div class="modal fade" id="productEditModal" tabindex="-1" role="dialog"
+                     aria-labelledby="productEditModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="productEditModalLabel">Изменить продукт</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form method="POST" th:action="@{/products/update_product}">
+                                    <div class="form-group">
+                                        <label for="idProduct" class="col-form-label">ID</label>
+                                        <input type="number" readonly name="id" class="form-control" id="idProduct"
+                                               value="">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="titleProduct" class="col-form-label">Название</label>
+                                        <input type="text" name="title" class="form-control" id="titleProduct" value="">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="costProduct" class="col-form-label">Цена</label>
+                                        <input type="number" name="cost" class="form-control" id="costProduct" value="">
+                                    </div>
+                                    <button class="btn btn-primary" type="submit">Изменить</button>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </td>
         </tr>
         </tbody>
     </table>
-</div>
 
+    <nav aria-label="Page navigation" th:if="${products.totalPages gt 0} ">
+        <ul class="pagination">
+            <li class="page-item" th:classappend="${products.isFirst() ? 'disabled' : ''}">
+                <a class="page-link"
+                   th:href="@{'/products?page='+ ${products.previousOrFirstPageable().getPageNumber()+1} + ${filterDefinition}}">Назад</a>
+            </li>
+            <li class="page-item enabled" th:if="${products.number > 2}">
+                <a class="page-link" th:href="@{'/products?page=1' + ${filterDefinition}}">1</a>
+            </li>
+            <li class="page-item enabled" th:if="${products.number > 2}">
+                <a class="page-link svg-icon"
+                   th:href="@{'/products?page=' + ${products.number - 4} + ${filterDefinition}}">...</a>
+            </li>
+            <li class="page-item" th:classappend="${products.getNumber() + 1 == i ? 'active' : ''}"
+                th:each="i : ${#numbers.sequence((products.number < 2 ? 1 : products.number - 1),
+                (products.getTotalPages() < 6 ? products.getTotalPages() :
+                (products.number < products.getTotalPages() - 2 ? products.number + 3: products.getTotalPages())))}">
+                <a class="page-link" th:text="${i}" th:href="@{'/products?page=' + ${i} + ${filterDefinition}}"></a>
+            </li>
+            <li class="page-item enabled" th:if="${products.number < products.totalPages - 3 }">
+                <a class="page-link svg-icon"
+                   th:href="@{'/products?page=' + ${products.number + 4} + ${filterDefinition}}">...</a>
+            </li>
+            <li class="page-item enabled" th:if="${products.number < products.totalPages - 3 }">
+                <a class="page-link" th:href="@{'/products?page=' + ${products.getTotalPages()} + ${filterDefinition}}">
+                    <span th:text="${products.getTotalPages()}"></span>
+                </a>
+            </li>
+
+            <li class="page-item" th:classappend="${products.isLast() ? 'disabled' : ''}">
+                <a class="page-link"
+                   th:href="@{'/products?page='+${products.nextOrLastPageable().getPageNumber()+1} + ${filterDefinition}}">Вперед</a>
+            </li>
+        </ul>
+    </nav>
+</div>
 </body>
 </html>
