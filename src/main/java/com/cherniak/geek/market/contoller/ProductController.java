@@ -8,10 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -41,9 +38,9 @@ public class ProductController {
         return "products";
     }
 
-    @PostMapping("/update_product")
-    public String save(@RequestParam Long id, @RequestParam String title, @RequestParam int cost) {
-        productService.save(new Product(id, title, cost));
+    @PostMapping("/edit")
+    public String save(@ModelAttribute Product product) {
+        productService.save(product);
         return "redirect:/products";
     }
 }

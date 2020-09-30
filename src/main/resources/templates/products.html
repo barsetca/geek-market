@@ -14,6 +14,7 @@
 <body>
 
 <div class="container">
+    <div th:replace="~{navigation :: navigation(Products)}"/>
     <h1>Каталог товаров</h1>
 
     <span th:if="${products.isEmpty()}">Продуктов нет</span>
@@ -63,8 +64,10 @@
             <td th:text="${p.title}"/>
             <td th:text="${p.cost}"/>
             <td>
-                <a data-toggle="modal" href="#productEditModal" class="btn btn-success"
+                <a class="btn btn-success" th:href="@{'/cart/add/' + ${p.id}}">В корзину</a>
+                <a data-toggle="modal" href="#productEditModal" class="btn btn-danger"
                    th:data-id="${p.id}" th:data-title="${p.title}" th:data-cost="${p.cost}">Изменить</a>
+
                 <script>
                     $(document).on("click", "a[href='#productEditModal']", function () {
                         var pId = $(this).data('id');
@@ -89,7 +92,7 @@
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <form method="POST" th:action="@{/products/update_product}">
+                                <form method="POST" th:action="@{/products/edit}">
                                     <div class="form-group">
                                         <label for="idProduct" class="col-form-label">ID</label>
                                         <input type="number" readonly name="id" class="form-control" id="idProduct"

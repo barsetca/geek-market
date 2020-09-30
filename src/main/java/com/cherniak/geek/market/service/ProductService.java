@@ -9,6 +9,8 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @Transactional(readOnly = true)
 public class ProductService {
@@ -18,6 +20,10 @@ public class ProductService {
     @Autowired
     public void setProductRepository(ProductRepository productRepository) {
         this.productRepository = productRepository;
+    }
+
+    public Optional<Product> findById(Long id){
+        return productRepository.findById(id);
     }
 
     public Page<Product> findAll(Specification<Product> spec, int page, int size) {
