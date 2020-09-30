@@ -10,7 +10,6 @@ import javax.persistence.*;
 @Table(name = "products")
 @Data
 @NoArgsConstructor
-@ToString
 public class Product {
 
     @Id

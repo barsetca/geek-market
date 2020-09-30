@@ -21,14 +21,18 @@
         <tr>
 
             <th>Название</th>
+            <th>Количество</th>
             <th>Цена</th>
+            <th>Итого</th>
             <th>Действие</th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="io:${simpleCart.items}">
-            <td th:text="${io.title}"/>
+        <tr th:each="io:${@cart.items}">
+            <td th:text="${io.product.title}"/>
+            <td th:text="${io.quantity}"/>
             <td th:text="${io.cost}"/>
+            <td th:text="${io.totalCost}"/>
             <td>
                 <a class="btn btn-success" th:href="@{'/cart'}">Изменить</a>
             </td>

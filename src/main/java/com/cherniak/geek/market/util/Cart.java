@@ -1,5 +1,7 @@
 package com.cherniak.geek.market.util;
 
+import com.cherniak.geek.market.model.Order;
+import com.cherniak.geek.market.model.OrderItem;
 import com.cherniak.geek.market.model.Product;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,7 +19,8 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 public class Cart {
-    private List<Product> items;
+    private List<OrderItem> items;
+    private int price;
 
     @PostConstruct
     public void init(){
@@ -25,6 +28,23 @@ public class Cart {
     }
 
     public void add (Product product){
-        items.add(product);
+        for(OrderItem item : items){
+            if(item.getProduct().getId().equals(product.getId())){
+                item.incrementQuantity();
+                recalculate();
+                return;
+            }
+        }
+
+        items.add(new OrderItem(product));
+        recalculate();
+
+    }
+
+    public void recalculate(){
+        price = 0;
+        for (OrderItem item : items){
+            price+=item.getQuantity()*item.getCost();
+        }
     }
 }
