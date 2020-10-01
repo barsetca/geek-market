@@ -12,6 +12,7 @@
 <body>
 <div class="container">
     <div th:replace="~{navigation :: navigation(Cart)}"/>
+
     <h1>Корзина</h1>
     <br/>
     <span th:if="${@cart.items.isEmpty()}">Корзина пуста</span>
@@ -31,7 +32,7 @@
             <td th:text="${io.cost}"/>
             <td>
                 <a th:href="@{'/cart/dec/' + ${io.product.id}}"><b> [-] </b></a>
-                <a th:text="${io.quantity}"></a>
+                <span th:text="${io.quantity}"></span>
                 <a th:href="@{'/cart/inc/' + ${io.product.id}}"><b> [+] </b></a>
 
             <td th:text="${io.totalCost}"/>
@@ -48,15 +49,16 @@
 
             </td>
         </tr>
-
         </tbody>
     </table>
     <hr/>
+
     <a th:if="${!@cart.items.isEmpty()}" th:href="@{'/orders/order'}" class="btn btn-success" role="button">Оформить
         заказ</a>
     <a th:href="@{'/products'}" class="btn btn-primary" role="button">Вернуться к покупкам</a>
     <a th:if="${!@cart.items.isEmpty()}" th:href="@{'/cart/clear'}" class="btn btn-danger" role="button">Очистить
         корзину</a>
+
 </div>
 </body>
 </html>

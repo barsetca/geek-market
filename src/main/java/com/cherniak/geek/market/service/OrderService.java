@@ -3,6 +3,7 @@ package com.cherniak.geek.market.service;
 import com.cherniak.geek.market.model.Order;
 import com.cherniak.geek.market.repository.specification.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,7 +26,7 @@ public class OrderService {
     }
 
     public List<Order> findAll() {
-        return orderRepository.findAll();
+        return orderRepository.findAll(Sort.by(Sort.Order.desc("id")));
     }
 
     @Transactional
