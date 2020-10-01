@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -18,12 +19,27 @@ public class Order {
     @Column(name = "id")
     private Long id;
 
+    @Column(name = "date")
+    private LocalDate date = LocalDate.now();
+
     @Column(name = "cost")
     private int cost;
 
-    @ManyToOne
-    @JoinColumn(name = "customer_id")
-    private Customer customer;
+//    @ManyToOne
+//    @JoinColumn(name = "customer_id")
+//    private Customer customer;
+
+    @Column(name = "firstname")
+    private String firstname;
+
+    @Column(name = "surname")
+    private String surname;
+
+    @Column(name = "phone")
+    private String phone;
+
+    @Column(name = "address")
+    private String address;
 
     @OneToMany(mappedBy = "order")
     @Cascade(org.hibernate.annotations.CascadeType.ALL)

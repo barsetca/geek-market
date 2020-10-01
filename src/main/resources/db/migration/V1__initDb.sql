@@ -19,9 +19,15 @@ CREATE TABLE IF NOT EXISTS customers
 
 CREATE TABLE IF NOT EXISTS orders
 (
-    id          bigserial PRIMARY KEY,
-    cost        INTEGER,
-    customer_id bigint references customers (id)
+    id        bigserial PRIMARY KEY,
+    date      DATE DEFAULT now(),
+    cost      INTEGER,
+    firstname VARCHAR(50),
+    surname   VARCHAR(50),
+    phone     VARCHAR(50),
+    address   VARCHAR(255)
+
+--     customer_id bigint references customers (id)
 );
 
 CREATE TABLE IF NOT EXISTS order_items
@@ -33,6 +39,5 @@ CREATE TABLE IF NOT EXISTS order_items
     product_id bigint references products (id),
     order_id   bigint references orders (id)
 );
-
 
 

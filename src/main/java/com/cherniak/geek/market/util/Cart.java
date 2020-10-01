@@ -80,4 +80,9 @@ public class Cart {
             totalQuantity += item.getQuantity();
         }
     }
+
+    public void clear() {
+        items.clear();
+        recalculate();
+    }
 }

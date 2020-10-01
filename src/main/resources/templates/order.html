@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Корзина</title>
+    <title>Заказ</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
@@ -11,10 +11,9 @@
 
 <body>
 <div class="container">
-    <div th:replace="~{navigation :: navigation(Cart)}"/>
-    <h1>Корзина</h1>
+    <h1>Ваш заказ</h1>
     <br/>
-    <span th:if="${@cart.items.isEmpty()}">Корзина пуста</span>
+    <span th:if="${@cart.items.isEmpty()}">Заказ пуст</span>
     <table th:if="${!@cart.items.isEmpty()}" class="table table-hover">
         <thead class="thead-light">
         <tr align="center">
@@ -22,41 +21,48 @@
             <th>Цена</th>
             <th>Количество</th>
             <th>Итого</th>
-            <th>Действие</th>
         </tr>
         </thead>
         <tbody>
         <tr align="center" th:each="io:${@cart.items}">
             <td th:text="${io.product.title}"/>
             <td th:text="${io.cost}"/>
-            <td>
-                <a th:href="@{'/cart/dec/' + ${io.product.id}}"><b> [-] </b></a>
-                <a th:text="${io.quantity}"></a>
-                <a th:href="@{'/cart/inc/' + ${io.product.id}}"><b> [+] </b></a>
-
+            <td th:text="${io.quantity}"/>
             <td th:text="${io.totalCost}"/>
-            <td>
-                <a class="btn btn-secondary" th:href="@{'/cart/remove/' + ${io.product.id}}">&times;</a>
-            </td>
+
         </tr>
         <tr align="center">
             <td></td>
             <td>Итого</td>
             <td th:text="${@cart.totalQuantity}"></td>
             <td th:text="${@cart.price}"></td>
-            <td>
-
-            </td>
         </tr>
-
         </tbody>
+
     </table>
-    <hr/>
-    <a th:if="${!@cart.items.isEmpty()}" th:href="@{'/orders/order'}" class="btn btn-success" role="button">Оформить
-        заказ</a>
-    <a th:href="@{'/products'}" class="btn btn-primary" role="button">Вернуться к покупкам</a>
-    <a th:if="${!@cart.items.isEmpty()}" th:href="@{'/cart/clear'}" class="btn btn-danger" role="button">Очистить
-        корзину</a>
+
+    <h4>Введите данные для оформления заказа</h4>
+    <form method="POST" th:action="@{/orders/add}">
+
+        <div class="row">
+            <div class="col">
+                <input type="text" required name="firstname" class="form-control" placeholder="Имя">
+            </div>
+            <div class="col">
+                <input type="text" required name="surname" class="form-control" placeholder="Фамилия">
+            </div>
+            <div class="col">
+                <input type="text" required name="phone" class="form-control" placeholder="Телефон">
+            </div>
+        </div>
+        <br/>
+        <div class="form-group">
+            <input type="text" required name="address" class="form-control" placeholder="Адрес">
+        </div>
+        <button class="btn btn-success" type="submit">Оформить</button>
+        <a th:href="@{'/cart'}" class="btn btn-danger" role="button">Отмена</a>
+
+    </form>
 </div>
 </body>
 </html>

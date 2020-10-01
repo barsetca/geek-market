@@ -31,6 +31,10 @@ public class ProductController {
                                @RequestParam Map<String, String> params) {
 
         page = page < 1 ? 1 : page;
+        if (size < 1) {
+            size = 1;
+            params.put("size", "1");
+        }
         ProductFilter productFilter = new ProductFilter(params);
         Page<Product> products = productService.findAll(productFilter.getSpec(), page - 1, size);
         model.addAttribute("products", products);
