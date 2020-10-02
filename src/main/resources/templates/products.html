@@ -8,11 +8,15 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-
+    <style>
+        button, a.btn, a.page-link {
+            font-size: 1.1em;
+            box-shadow: 4px 4px 4px #999999;
+        }
+    </style>
 </head>
 
 <body>
-
 <div class="container">
     <div th:replace="~{navigation :: navigation(Products)}"/>
     <h1>Каталог товаров</h1>
@@ -48,7 +52,7 @@
         <span th:text="'Всего товаров по фильтру: ' + ${products.getTotalElements()} + ' позиций'"></span>
     </form>
     <hr/>
-    <a id="prod"  th:href="@{'/cart'}" class="btn btn-dark" role="button">Перейти в корзину</a>
+    <a id="prod" th:href="@{'/cart'}" class="btn btn-dark" role="button">Перейти в корзину</a>
     <br/>
     <br/>
     <table class="table table-hover" th:if="${!products.isEmpty()}">
@@ -66,8 +70,8 @@
             <td th:text="${p.title}"/>
             <td th:text="${p.cost}"/>
             <td>
-                <a class="btn btn-success" th:href="@{'/cart/add/' + ${p.id}}">В корзину</a>
-                <a data-toggle="modal" href="#productEditModal" class="btn btn-danger"
+                <a class="btn btn-success btn-sm" th:href="@{'/cart/add/' + ${p.id}}">В корзину</a>
+                <a data-toggle="modal" href="#productEditModal" class="btn btn-danger btn-sm"
                    th:data-id="${p.id}" th:data-title="${p.title}" th:data-cost="${p.cost}">Изменить</a>
 
                 <script>
