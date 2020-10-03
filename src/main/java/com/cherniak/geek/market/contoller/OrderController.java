@@ -6,10 +6,7 @@ import com.cherniak.geek.market.util.Cart;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -35,12 +32,7 @@ public class OrderController {
     }
 
     @PostMapping("/add")
-    public String save(@RequestParam Map<String, String> params) {
-        Order order = new Order();
-        order.setFirstname(params.get("firstname"));
-        order.setSurname(params.get("surname"));
-        order.setPhone(params.get("phone"));
-        order.setAddress(params.get("address"));
+    public String save(@ModelAttribute Order order) {
         order.setCost(cart.getPrice());
         cart.getItems().forEach(io -> io.setOrder(order));
         order.setItems(cart.getItems());
