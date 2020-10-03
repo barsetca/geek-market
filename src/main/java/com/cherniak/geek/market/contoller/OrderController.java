@@ -42,7 +42,6 @@ public class OrderController {
         order.setPhone(params.get("phone"));
         order.setAddress(params.get("address"));
         order.setCost(cart.getPrice());
-        orderService.save(order);
         cart.getItems().forEach(io -> io.setOrder(order));
         order.setItems(cart.getItems());
         orderService.save(order);
