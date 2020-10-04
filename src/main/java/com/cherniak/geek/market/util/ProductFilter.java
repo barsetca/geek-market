@@ -17,6 +17,10 @@ public class ProductFilter {
         StringBuilder filterDefinitionBuilder = new StringBuilder();
         spec = Specification.where(null);
 
+        String size = params.get("size");
+        if (params.containsKey("size") && !size.isBlank()) {
+            filterDefinitionBuilder.append("&size=").append(size);
+        }
         String minCost = params.get("min_cost");
         if (params.containsKey("min_cost") && !minCost.isBlank()) {
             int min = Integer.parseInt(minCost);

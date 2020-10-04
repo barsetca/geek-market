@@ -5,8 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Data
@@ -22,9 +20,8 @@ public class Customer {
     @Column(name = "name", unique = true)
     private String name;
 
-    @OneToMany(mappedBy = "customer")
-    private List<Order> orders = new ArrayList<>();
-
+//    @OneToMany(mappedBy = "customer")
+//    private List<Order> orders = new ArrayList<>();
 
     public Customer(String name) {
         this(null, name);
@@ -34,7 +31,6 @@ public class Customer {
         this.id = id;
         this.name = name;
     }
-
 
     @Override
     public String toString() {

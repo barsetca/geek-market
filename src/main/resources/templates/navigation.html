@@ -13,17 +13,17 @@
 </head>
 
 <div th:fragment="navigation(activeTab)">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-secondary">
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item" th:classappend="${activeTab == 'Products' ? 'active' : ''}">
-                    <a class="nav-link" th:href="@{/products}">Продукты</a>
+                    <a class="nav-link" th:href="@{/products}">Каталог</a>
                 </li>
                 <li class="nav-item" th:classappend="${activeTab == 'Cart' ? 'active' : ''}">
-                    <a class="nav-link" th:href="@{/cart}" th:text="'Корзина (' + ${@cart.totalQuantity} + ')'"/>
+                    <a class="nav-link" th:href="@{/cart}" th:text="'Moя Корзина (' + ${@cart.totalQuantity} + ')'"/>
                 </li>
                 <li class="nav-item" th:classappend="${activeTab == 'Orders' ? 'active' : ''}">
-                    <a class="nav-link" th:href="@{/orders}">Заказы</a>
+                    <a class="nav-link" th:href="@{/orders}">Мои Заказы</a>
                 </li>
             </ul>
         </div>

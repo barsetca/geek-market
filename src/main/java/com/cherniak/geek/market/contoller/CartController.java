@@ -55,4 +55,10 @@ public class CartController {
         cart.remove(productId);
         return "redirect:/cart";
     }
+
+    @GetMapping("/clear")
+    public String clearCart() {
+        cart.clear();
+        return "redirect:/cart";
+    }
 }
