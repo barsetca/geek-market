@@ -1,0 +1,46 @@
+
+# curl -X POST -d '{"title":"NewTitle","cost":1000}' -H "Content-Type:application/json" http://localhost:8189/market/api/v1/products
+POST http://localhost:8189/market/api/v1/products
+Content-Type: application/json
+
+{
+  "title": "NewTitle",
+  "cost": 1000
+}
+
+###
+
+# curl http://localhost:8189/market/api/v1/products/{id}
+GET http://localhost:8189/market/api/v1/products/2
+
+###
+
+# curl -X PUT -d '{"id":2,"title":"NewTitle","cost":1000}' -H "Content-Type:application/json" http://localhost:8189/market/api/v1/products
+PUT http://localhost:8189/market/api/v1/products
+Content-Type: application/json
+
+{
+  "id": 2,
+  "title": "NewTitle",
+  "cost": 1000
+}
+
+###
+
+# curl -X DELETE http://localhost:8189/market/api/v1/products/2
+DELETE http://localhost:8189/market/api/v1/products/2
+
+###
+
+# curl -X DELETE http://localhost:8189/market/api/v1/products
+DELETE http://localhost:8189/market/api/v1/products
+
+###
+
+# curl http://localhost:8189/market/api/v1/products
+GET http://localhost:8189/market/api/v1/products
+
+###
+
+
+

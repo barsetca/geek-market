@@ -1,7 +1,7 @@
 package com.cherniak.geek.market.service;
 
 import com.cherniak.geek.market.model.Order;
-import com.cherniak.geek.market.repository.specification.OrderRepository;
+import com.cherniak.geek.market.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;

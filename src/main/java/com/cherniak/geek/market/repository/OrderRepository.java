@@ -1,4 +1,4 @@
-package com.cherniak.geek.market.repository.specification;
+package com.cherniak.geek.market.repository;
 
 import com.cherniak.geek.market.model.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
