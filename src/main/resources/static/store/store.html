@@ -15,8 +15,14 @@
         </div>
         <div>
             <button class="btn btn-success" type="submit">Фильтровать</button>
+            <button class="btn btn-secondary" ng-click="clearFilter()">Очистить</button>
         </div>
     </form>
+    Количество элементов
+    <span>{{Products.numberOfElements}}</span>
+    <span>{{Products.totalElements}}</span>
+    <span>{{Products}}</span>
+
 
     <h3>Товары</h3>
     <table class="table table-hover" cellpadding="0" cellspacing="0">
@@ -26,13 +32,13 @@
         </tr>
         <tbody>
 
-        <tr ng-repeat="p in Products">
+        <tr ng-repeat="p in Products.content">
             <td>{{p.title}}</td>
             <td>{{p.cost}}</td>
         </tr>
         </tbody>
     </table>
-    <button class="btn btn-success" ng-click="fillTable()">Обновить</button>
+
     <h3>Добавить новый товар</h3>
     <form novalidate ng-submit="submitCreateNewProduct()">
         <div class="form-group col-md-6">
@@ -47,4 +53,18 @@
             <button class="btn btn-success" type="submit">Сохранить</button>
         </div>
     </form>
-</div>
+    <hr/>
+    <nav aria-label="Page navigation">
+        <ul class="pagination pg-blue">
+            <li class="page-item active" ng-class="{'disabled': Products.first}">
+                <a class="page-link" ng-click="setPage(Products.number)">Предыдущая</a>
+            </li>
+            <li class="page-item" ng-class="{'active': (Products.number+1) == n}" ng-repeat="n in range(1, Products.totalPages)">
+                <a class="page-link" ng-click="setPage(n)">{{n}}</a>
+            </li>
+            <li class="page-item active" ng-class="{'disabled': Products.last}">
+                <a class="page-link" ng-click="setPage(Products.number+2)">Следующая</a>
+            </li>
+        </ul>
+    </nav>
+    </div>

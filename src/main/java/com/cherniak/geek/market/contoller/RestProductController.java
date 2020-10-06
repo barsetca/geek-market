@@ -20,11 +20,17 @@ public class RestProductController {
     ProductService productService;
 
     @GetMapping
-    public List<Product> getAll(@RequestParam Map<String,String> params)
+    public Page<Product> getAll( @RequestParam(defaultValue = "1", name = "page") Integer page,
+                                 @RequestParam Map<String,String> params)
     {
+        page = page < 1 ? 1 : page;
+//        if (size < 1) {
+//            size = 1;
+//            params.put("size", "1");
+//        }
         System.out.println("Пришли сюда с парметрами " + params);
         ProductFilter productFilter = new ProductFilter(params);
-        return productService.findAll(productFilter.getSpec(), 0, 10).getContent();
+        return productService.findAll(productFilter.getSpec(), page-1, 10);
     }
 
 //    public String findProducts(Model model,

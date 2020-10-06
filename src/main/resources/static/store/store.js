@@ -8,17 +8,6 @@ angular.module('app').controller('storeController', function ($scope, $http) {
             });
     };
 
-
-    // $scope.applyFilter = function () {
-    //     $http({
-    //         url: contextPath + '/api/v1/books',
-    //         method: "GET",
-    //         params: {obj_title: $scope.obj.title, obj_price: $scope.obj.price}
-    //     }).then(function (response) {
-    //         ...
-    //     });
-    // }
-
     $scope.submitCreateNewProduct = function () {
         $http.post(contextPath + '/api/v1/products', $scope.newProduct)
             .then(function (response) {
@@ -32,12 +21,37 @@ angular.module('app').controller('storeController', function ($scope, $http) {
        $http({
            url: contextPath + '/api/v1/products',
            method: "GET",
-           params: {title: $scope.newFilter.title, min_cost: $scope.newFilter.min_cost, max_cost: $scope.newFilter.max_cost}
+           params: {page: $scope.newFilter.page, title: $scope.newFilter.title, min_cost: $scope.newFilter.min_cost,
+               max_cost: $scope.newFilter.max_cost}
        }).then(function (response){
            $scope.Products = response.data;
         });
     };
 
+    $scope.clearFilter = function () {
+        $scope.newFilter = null;
+        $scope.fillTable();
+    };
+
     $scope.fillTable();
+
+    $scope.range = function(min, max, step) {
+        step = step || 1;
+        var input = [];
+        for (var i = min; i <= max; i += step) {
+            input.push(i);
+        }
+        return input;
+    };
+
+    $scope.setPage = function (page) {
+        $http({
+            url: contextPath + '/api/v1/products',
+            method: "GET",
+            params: {page: page}
+        }).then(function (response){
+            $scope.Products = response.data;
+        });
+    };
 
 });
