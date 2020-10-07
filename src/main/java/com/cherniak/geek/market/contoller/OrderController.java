@@ -32,6 +32,7 @@ public class OrderController {
                 new UsernameNotFoundException(String.format("User by username %s not exists", username)));
         List<Order> orders = orderService.findAllByUserId(user.getId());
         model.addAttribute("orders", orders);
+        model.addAttribute("username", username);
         return "orders";
     }
 
