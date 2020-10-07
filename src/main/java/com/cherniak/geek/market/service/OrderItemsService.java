@@ -20,7 +20,6 @@ public class OrderItemsService {
     }
 
     public List<OrderItem> findAllByOrderId(Long id) {
-
         return orderItemsRepository.findAllByOrderId(id);
     }
 }

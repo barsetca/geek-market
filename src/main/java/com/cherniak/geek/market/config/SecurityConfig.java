@@ -24,8 +24,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/products/**", "/cart/**", "/order_items/**").authenticated()
                 .antMatchers("/admin/**").hasAnyRole("ADMIN")
+                .antMatchers("/h2-console/**").hasAnyRole("ADMIN")
                 .antMatchers("/director/").hasAnyAuthority("EXCLUSIVE")
                 .anyRequest().permitAll()
+                .and()
+                .logout()
+                .logoutSuccessUrl(("/profile"))
                 .and()
                 .formLogin();
     }
@@ -35,12 +39,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-public DaoAuthenticationProvider daoAuthenticationProvider(){
-DaoAuthenticationProvider authenticationProvider =new DaoAuthenticationProvider();
+    public DaoAuthenticationProvider daoAuthenticationProvider() {
+        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
 
-authenticationProvider.setPasswordEncoder(passwordEncoder());
-authenticationProvider.setUserDetailsService(userService);
-
-return authenticationProvider;
-}
+        authenticationProvider.setPasswordEncoder(passwordEncoder());
+        authenticationProvider.setUserDetailsService(userService);
+        return authenticationProvider;
+    }
 }

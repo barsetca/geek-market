@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-
+<html xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="utf-8"/>
 
@@ -71,7 +71,8 @@
             <td th:text="${p.cost}"/>
             <td>
                 <a class="btn btn-success btn-sm" th:href="@{'/cart/add/' + ${p.id}}">В корзину</a>
-                <a data-toggle="modal" href="#productEditModal" class="btn btn-danger btn-sm"
+                <a sec:authorize="hasRole('ADMIN')" data-toggle="modal" href="#productEditModal"
+                   class="btn btn-danger btn-sm"
                    th:data-id="${p.id}" th:data-title="${p.title}" th:data-cost="${p.cost}">Изменить</a>
 
                 <script>
