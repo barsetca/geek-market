@@ -29,6 +29,10 @@ public class OrderService {
         return orderRepository.findAll(Sort.by(Sort.Order.desc("id")));
     }
 
+    public List<Order> findAllByUserId(Long userId) {
+        return orderRepository.findAllByUserId(userId, Sort.by(Sort.Order.desc("id")));
+    }
+
     @Transactional
     public Order save(Order order) {
         return orderRepository.save(order);

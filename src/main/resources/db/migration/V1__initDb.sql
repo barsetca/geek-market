@@ -38,11 +38,12 @@ CREATE TABLE IF NOT EXISTS products
 CREATE TABLE IF NOT EXISTS orders
 (
     id        bigserial PRIMARY KEY,
-    user_id bigint REFERENCES users(id),
     date      DATE DEFAULT now(),
     cost      INTEGER,
+    receiver     VARCHAR(50),
     phone     VARCHAR(50),
-    address   VARCHAR(255)
+    address   VARCHAR(255),
+    user_id bigint REFERENCES users(id)
 );
 
 CREATE TABLE IF NOT EXISTS order_items

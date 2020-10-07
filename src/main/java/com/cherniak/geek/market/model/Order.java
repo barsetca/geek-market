@@ -27,6 +27,9 @@ public class Order {
     @Column(name = "cost")
     private int cost;
 
+    @Column(name = "receiver")
+    private String receiver;
+
     @Column(name = "phone")
     private String phone;
 
@@ -41,9 +44,10 @@ public class Order {
     @JoinColumn(name = "user_id")
     private User user;
 
-    public Order(User user, Cart cart, String phone, String address) {
+    public Order(User user, Cart cart, String receiver, String phone, String address) {
         this.phone = phone;
         this.address = address;
+        this.receiver = receiver;
         this.user = user;
         this.cost = cart.getPrice();
         this.items = new ArrayList<>();

@@ -18,7 +18,7 @@
 <body>
 <div class="container">
     <div th:replace="~{navigation :: navigation(Orders)}"/>
-    <h1>Ваши заказы</h1>
+    <h1 th:text="${username + ' Ваши заказы'}"></h1>
     <br/>
     <span th:if="${orders.isEmpty()}">Заказов нет</span>
     <table th:if="${!orders.isEmpty()}" class="table table-hover">
@@ -27,6 +27,9 @@
             <th>№ заказа</th>
             <th>Дата заказа</th>
             <th>Сумма заказа</th>
+            <th>Получатель</th>
+            <th>Телефон</th>
+            <th>Адрес</th>
             <th></th>
         </tr>
         </thead>
@@ -35,8 +38,10 @@
             <td th:text="${o.id}"/>
             <td th:text="${o.date}"/>
             <td th:text="${o.cost}"/>
+            <td th:text="${o.receiver}"/>
+            <td th:text="${o.address}"/>
             <td>
-                <a class="btn btn-info btn-sm" th:href="@{'/order_items/' + ${o.id}}">Подробности заказа</a>
+                <a class="btn btn-info btn-sm" th:href="@{'/order_items/' + ${o.id}}">Содержание заказа</a>
             </td>
         </tr>
         </tbody>

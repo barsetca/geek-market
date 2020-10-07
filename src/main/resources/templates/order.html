@@ -16,7 +16,7 @@
 
 <body>
 <div class="container">
-    <h1>Ваш заказ</h1>
+    <h1 th:text="${username + ' Ваш заказ:'}"></h1>
     <br/>
     <span th:if="${@cart.items.isEmpty()}">Заказ пуст</span>
     <table th:if="${!@cart.items.isEmpty()}" class="table table-hover">
@@ -51,7 +51,7 @@
 
         <div class="row">
             <div class="col">
-                <input type="text" required name="username" class="form-control" placeholder="Имя пользователя">
+                <input type="text" required name="receiver" th:value="${username}" class="form-control" placeholder="Имя пользователя">
             </div>
             <div class="col">
                 <input type="text" required name="phone" class="form-control" placeholder="Телефон">
