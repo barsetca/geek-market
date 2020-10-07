@@ -1,11 +1,9 @@
-DELETE
-FROM order_items;
-DELETE
-FROM orders;
-DELETE
-FROM products;
-DELETE
-FROM customers;
+DELETE FROM order_items;
+DELETE FROM orders;
+DELETE FROM products;
+DELETE FROM users_roles;
+DELETE FROM roles;
+DELETE FROM users;
 
 INSERT INTO products (title, cost)
 VALUES ('Product1', 100),
@@ -79,8 +77,14 @@ VALUES ('Product1', 100),
        ('Product7Nine', 20),
        ('Product80', 10);
 
-INSERT INTO customers (name)
-VALUES ('Joric'),
-       ('Doric');
+INSERT INTO roles (name) VALUES
+('ROLE_USER'), ('ROLE_ADMIN'), ('EXCLUSIVE');
+
+INSERT INTO users (username, password, email)
+VALUES ('user', '$2y$12$bA7N3xIrk9E4PtgKJGG9TOagHvouaoUFkiXBsgHtZmUbyUhnQgdHq', 'user@user.ru'),
+       ('admin', '$2y$12$plJkmvCZlSLWOLSe7V4rCOOokMSa20cznpdFYaBuPUCY3s6z18Hm.', 'admin@admin.com');
+
+INSERT INTO users_roles (user_id, role_id) VALUES
+(1,1), (2,1), (2,2);
 
 

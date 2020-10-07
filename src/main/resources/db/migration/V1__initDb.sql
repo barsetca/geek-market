@@ -1,7 +1,32 @@
 DROP TABLE IF EXISTS order_items;
 DROP TABLE IF EXISTS orders;
 DROP TABLE IF EXISTS products;
-DROP TABLE IF EXISTS customers;
+DROP TABLE IF EXISTS users_roles;
+DROP TABLE IF EXISTS roles;
+DROP TABLE IF EXISTS users;
+
+CREATE TABLE IF NOT EXISTS users
+(
+    id       bigserial PRIMARY KEY,
+    username varchar(50) NOT NULL,
+    password varchar(80) NOT NULL,
+    email    varchar(50) NOT NULL UNIQUE
+);
+
+CREATE TABLE IF NOT EXISTS roles
+(
+    id   bigserial PRIMARY KEY,
+    name varchar(50) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS users_roles
+(
+    user_id bigint,
+    role_id bigint,
+    primary key (user_id, role_id),
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (role_id) REFERENCES roles(id)
+);
 
 CREATE TABLE IF NOT EXISTS products
 (
@@ -10,24 +35,14 @@ CREATE TABLE IF NOT EXISTS products
     cost  INTEGER
 );
 
-CREATE TABLE IF NOT EXISTS customers
-(
-    id   bigserial PRIMARY KEY,
-    name VARCHAR(255) UNIQUE NOT NULL
-);
-
-
 CREATE TABLE IF NOT EXISTS orders
 (
     id        bigserial PRIMARY KEY,
+    user_id bigint REFERENCES users(id),
     date      DATE DEFAULT now(),
     cost      INTEGER,
-    firstname VARCHAR(50),
-    surname   VARCHAR(50),
     phone     VARCHAR(50),
     address   VARCHAR(255)
-
---     customer_id bigint references customers (id)
 );
 
 CREATE TABLE IF NOT EXISTS order_items

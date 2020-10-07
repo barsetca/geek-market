@@ -1,7 +1,10 @@
 package com.cherniak.geek.market.contoller;
 
+import com.cherniak.geek.market.exception.ResourceNotFoundException;
 import com.cherniak.geek.market.model.Order;
+import com.cherniak.geek.market.model.User;
 import com.cherniak.geek.market.service.OrderService;
+import com.cherniak.geek.market.service.UserService;
 import com.cherniak.geek.market.util.Cart;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -17,6 +20,8 @@ import java.util.Map;
 public class OrderController {
 
     OrderService orderService;
+    UserService userService;
+
     Cart cart;
 
     @GetMapping
@@ -32,12 +37,12 @@ public class OrderController {
     }
 
     @PostMapping("/add")
-    public String save(@ModelAttribute Order order) {
-        order.setCost(cart.getPrice());
-        cart.getItems().forEach(io -> io.setOrder(order));
-        order.setItems(cart.getItems());
+    public String save(@RequestParam Map<String,String> params) {
+        System.out.println(params);
+        String username = params.get("username");
+        User user = userService.getByUsername(username).orElseThrow(() -> new ResourceNotFoundException(String.format("User by username %s not exists", username)));
+        Order order = new Order(user, cart, params.get("phone"), params.get("address"));
         orderService.save(order);
-        cart.clear();
         return "redirect:/orders";
     }
 }
