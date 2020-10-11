@@ -24,14 +24,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/products/**", "/cart/**", "/order_items/**").authenticated()
                 .antMatchers("/admin/**").hasAnyRole("ADMIN")
-                .antMatchers("/h2-console/**").hasAnyRole("ADMIN")
                 .antMatchers("/director/").hasAnyAuthority("EXCLUSIVE")
+                .antMatchers("/h2-console/**").permitAll()
+                .antMatchers("/").permitAll()
                 .anyRequest().permitAll()
                 .and()
                 .logout()
                 .logoutSuccessUrl("/profile")
                 .and()
                 .formLogin();
+
+        http.csrf().disable();
+        http.headers().frameOptions().disable();
     }
 
     @Bean
