@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 
 <html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -25,7 +26,14 @@
                 <li class="nav-item" th:classappend="${activeTab == 'Orders' ? 'active' : ''}">
                     <a class="nav-link" th:href="@{/orders}">Мои Заказы</a>
                 </li>
+                <li class="nav-item" sec:authorize="hasRole('ADMIN')"
+                    th:classappend="${activeTab == 'Users' ? 'active' : ''}">
+                    <a class="nav-link" th:href="@{/admin/users}">Пользователи</a>
+                </li>
             </ul>
+            <form class="form-inline my-2 my-lg-0">
+                <a th:href="@{'/logout'}" class="btn btn-outline-light my-2 my-sm-0" type="submit">Выйти</a>
+            </form>
         </div>
     </nav>
 </div>

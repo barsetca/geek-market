@@ -20,7 +20,6 @@ public class RestProductController {
     public Page<Product> getAll(@RequestParam(defaultValue = "1", name = "page") Integer page,
                                 @RequestParam Map<String, String> params) {
         page = page < 1 ? 1 : page;
-        System.out.println("Пришли сюда с парметрами " + params);
         ProductFilter productFilter = new ProductFilter(params);
         return productService.findAll(productFilter.getSpec(), page - 1, 5);
     }
@@ -45,7 +44,6 @@ public class RestProductController {
     public void deleteAll() {
         productService.deleteAll();
     }
-
 
     @DeleteMapping("/{id}")
     public void deleteById(@PathVariable Long id) {

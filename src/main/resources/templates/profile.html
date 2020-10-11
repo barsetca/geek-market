@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Регистрация</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <style>
+        button, a.btn {
+            box-shadow: 4px 4px 4px #999999;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+    <div>
+        <h3>Магазин 'Geek Market'</h3>
+        <p>
+            Работаем только для Вас!!!
+        </p>
+    </div>
+
+    <h1>Страница автоизации</h1>
+    <hr/>
+    <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+        <div class="btn-group mr-2" role="group" aria-label="First group">
+            <a data-toggle="modal" href="#productEditModal" class="btn btn-primary">Регистрация</a>
+        </div>
+        <div class="btn-group mr-2" role="group" aria-label="First group">
+            <a th:href="@{'/products'}" class="btn btn-success" role="button">Войти</a>
+        </div>
+    </div>
+    <hr/>
+    <div class="modal fade" id="productEditModal" tabindex="-1" role="dialog"
+         aria-labelledby="productEditModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="productEditModalLabel">Зарегистрироваться</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" th:action="@{/profile/register}">
+                        <div class="form-group">
+                            <label for="inputUsername" class="col-form-label">Username</label>
+                            <input type="text" required name="username" class="form-control" id="inputUsername">
+                        </div>
+                        <div class="form-group">
+                            <label for="inputPassword" class="col-form-label">Password</label>
+                            <input type="text" required name="password" class="form-control" id="inputPassword">
+                        </div>
+                        <div class="form-group">
+                            <label for="inputEmail" class="col-form-label">Email</label>
+                            <input type="text" required name="email" class="form-control" id="inputEmail">
+                        </div>
+                        <button class="btn btn-primary" type="submit">Отправить</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

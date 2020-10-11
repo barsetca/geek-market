@@ -9,7 +9,7 @@
     function config($routeProvider, $httpProvider) {
         $routeProvider
             .when('/', {
-                templateUrl: 'main/main.html'
+                templateUrl: 'main/profile.html'
             })
             .when('/store', {
                 templateUrl: 'store/store.html',
