@@ -35,7 +35,7 @@ angular.module('app').controller('storeController', function ($scope, $http) {
     };
 
     $scope.addToCart = function (productId) {
-        $http.get(contextPath + '/api/v1/cart/add/' + productId)
+        $http.get(contextPath + '/api/v1/restcart/add/' + productId)
             .then(function (response) {
                 alert('Товар добавлен в корзину')
             });
