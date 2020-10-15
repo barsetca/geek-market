@@ -1,0 +1,26 @@
+<div>
+
+    <h3>Товары</h3>
+    <table class="table table-hover" cellpadding="0" cellspacing="0">
+        <span> {{cart.items}} </span>
+           <tr align="center">
+            <th>Название</th>
+            <th>Цена</th>
+            <th>Количество</th>
+            <th>Итого</th>
+            <th>Действие</th>
+        </tr>
+
+        <tbody>
+
+        <tr ng-repeat="oi in cart.items" align="center">
+            <td>{{oi.title}}</td>
+            <td>{{oi.cost}}</td>
+            <td>{{oi.quantity}}</td>
+            <td>{{oi.totalCost}}</td>
+            <td></td>
+        </tr>
+        </tbody>
+    </table>
+
+ </div>

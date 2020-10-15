@@ -23,14 +23,18 @@
     <h3>Товары</h3>
     <table class="table table-hover" cellpadding="0" cellspacing="0">
         <tr>
-            <td>Название</td>
-            <td>Цена</td>
+            <th>Название</th>
+            <th>Цена</th>
+            <th></th>
         </tr>
         <tbody>
 
         <tr ng-repeat="p in Products.content">
             <td>{{p.title}}</td>
             <td>{{p.cost}}</td>
+            <td>
+                <button class="btn btn-success" ng-click="addToCart(p.id)">Добавить в корзину</button>
+            </td>
         </tr>
         </tbody>
     </table>

@@ -45,4 +45,12 @@ public class ProductService {
         productRepository.deleteById(id);
     }
 
+    public boolean existsById(Long id){
+        return productRepository.existsById(id);
+    }
+
+    public boolean existsByTitle(String title){
+        return productRepository.existsByTitle(title);
+    }
+
 }

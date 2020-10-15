@@ -4,6 +4,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.Collection;
 
 @Entity
@@ -18,6 +21,8 @@ public class Role {
     private Long id;
 
     @Column(name = "name")
+    @NotBlank
+    @Size(min = 2)
     private String name;
 
     @ManyToMany

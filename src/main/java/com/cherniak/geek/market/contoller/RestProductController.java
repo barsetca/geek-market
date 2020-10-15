@@ -1,10 +1,13 @@
 package com.cherniak.geek.market.contoller;
 
+import com.cherniak.geek.market.exception.ResourceCreationException;
 import com.cherniak.geek.market.model.Product;
 import com.cherniak.geek.market.service.ProductService;
 import com.cherniak.geek.market.util.ProductFilter;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -30,13 +33,50 @@ public class RestProductController {
     }
 
     @PostMapping
-    public Product create(@RequestBody Product product) {
+    public Product create(@RequestBody @Validated Product product, BindingResult result) {
+        if(result.hasErrors()){
+            StringBuilder sb = new StringBuilder();
+            result.getFieldErrors().forEach(
+                    fe -> {
+                        String msg = fe.getDefaultMessage();
+                        if (msg != null) {
+                            if (!msg.startsWith(fe.getField())) {
+                                msg = fe.getField() + " - " + msg;
+                            }
+                            sb.append(" Поле: ").append(msg);
+                        }
+                    });
+            throw new ResourceCreationException(sb.toString());
+        }
+        Long id = product.getId();
+
+        if (id !=null && productService.existsById(id)){
+            throw new ResourceCreationException(String.format("Product with id = %d already exists", id));
+        }
+        String title = product.getTitle();
+        if (productService.existsByTitle(product.getTitle())){
+            throw new ResourceCreationException(String.format("Product with title %s already exists",title));
+        }
         product.setId(null);
         return productService.save(product);
     }
 
     @PutMapping
-    public void update(@RequestBody Product product) {
+    public void update(@RequestBody @Validated Product product, BindingResult result) {
+        if(result.hasErrors()){
+            StringBuilder sb = new StringBuilder();
+            result.getFieldErrors().forEach(
+                    fe -> {
+                        String msg = fe.getDefaultMessage();
+                        if (msg != null) {
+                            if (!msg.startsWith(fe.getField())) {
+                                msg = fe.getField() + " - " + msg;
+                            }
+                            sb.append(" Поле: ").append(msg);
+                        }
+                    });
+            throw new ResourceCreationException(sb.toString());
+        }
         productService.save(product);
     }
 
