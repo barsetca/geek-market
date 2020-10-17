@@ -6,6 +6,9 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.Collection;
 import java.util.List;
 
@@ -21,12 +24,17 @@ public class User {
     private Long id;
 
     @Column(name = "username")
+    @NotBlank
+    @Size(min = 2)
     private String username;
 
     @Column(name = "password")
+    @NotBlank
+    @Size(min = 2)
     private String password;
 
     @Column(name = "email", unique = true)
+    @Email
     private String email;
 
     @OneToMany(mappedBy = "user")

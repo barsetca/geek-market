@@ -1,9 +1,11 @@
 package com.cherniak.geek.market.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 
 @Entity
 @NoArgsConstructor
@@ -17,12 +19,14 @@ public class OrderItem {
     private Long id;
 
     @Column(name = "cost")
+    @Min(1)
     private int cost;
 
     @Column(name = "total_cost")
     private int totalCost;
 
     @Column(name = "quantity")
+    @Min(1)
     private int quantity;
 
     @ManyToOne

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -43,7 +44,7 @@ public class ProductController {
     }
 
     @PostMapping("/edit")
-    public String save(@ModelAttribute Product product) {
+    public String save(@ModelAttribute  @Validated Product product) {
         productService.save(product);
         return "redirect:/products";
     }

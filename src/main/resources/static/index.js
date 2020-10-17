@@ -9,11 +9,15 @@
     function config($routeProvider, $httpProvider) {
         $routeProvider
             .when('/', {
-                templateUrl: 'main/profile.html'
+                templateUrl: 'main/main.html'
             })
             .when('/store', {
                 templateUrl: 'store/store.html',
                 controller: 'storeController'
+            })
+            .when('/restcart', {
+                templateUrl: 'restcart/restcart.html',
+                controller: 'restcartController'
             });
     }
 })();

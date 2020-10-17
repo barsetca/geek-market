@@ -4,6 +4,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "products")
@@ -16,10 +18,12 @@ public class Product {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "title", nullable = false)
+    @Column(name = "title", nullable = false, unique = true)
+    @Size(min = 2, max = 1000)
     private String title;
 
     @Column(name = "cost")
+    @Min(1)
     private Integer cost;
 
     public Product(String title, int cost) {

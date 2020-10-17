@@ -4,8 +4,8 @@ POST http://localhost:8189/market/api/v1/products
 Content-Type: application/json
 
 {
-  "title": "NewTitle",
-  "cost": 1000
+  "title": "D",
+  "cost": 0
 }
 
 ###
@@ -28,7 +28,7 @@ Content-Type: application/json
 ###
 
 # curl -X DELETE http://localhost:8189/market/api/v1/products/2
-DELETE http://localhost:8189/market/api/v1/products/2
+DELETE http://localhost:8189/market/api/v1/products/75
 
 ###
 

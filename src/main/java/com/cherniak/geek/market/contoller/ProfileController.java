@@ -7,6 +7,7 @@ import com.cherniak.geek.market.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,7 +34,7 @@ public class ProfileController {
     }
 
     @PostMapping("/register")
-    public String registerUser(@ModelAttribute User user) throws RoleNotFoundException {
+    public String registerUser(@ModelAttribute  @Validated User user) throws RoleNotFoundException {
         System.out.println(user);
         String password = bCryptPasswordEncoder.encode(user.getPassword());
         user.setPassword(password);
