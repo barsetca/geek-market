@@ -15,9 +15,13 @@
                 templateUrl: 'store/store.html',
                 controller: 'storeController'
             })
-            .when('/restcart', {
-                templateUrl: 'restcart/restcart.html',
-                controller: 'restcartController'
+            .when('/admin', {
+                templateUrl: 'admin/admin.html',
+                controller: 'adminController'
+            })
+            .when('/cart', {
+                templateUrl: 'cart/cart.html',
+                controller: 'cartController'
             });
     }
 })();

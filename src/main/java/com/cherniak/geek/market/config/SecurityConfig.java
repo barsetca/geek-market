@@ -21,22 +21,30 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
-                .antMatchers("/products/**", "/cart/**", "/order_items/**").authenticated()
-                .antMatchers("/admin/**").hasAnyRole("ADMIN")
-                .antMatchers("/director/").hasAnyAuthority("EXCLUSIVE")
-                .antMatchers("/h2-console/**").permitAll()
-                .antMatchers("/").permitAll()
-                .anyRequest().permitAll()
-                .and()
-                .logout()
-                .logoutSuccessUrl("/profile")
-                .and()
-                .formLogin();
+//        http.authorizeRequests()
+//                .antMatchers("/products/**", "/cart/**", "/order_items/**").authenticated()
+//                .antMatchers("/admin/**").hasAnyRole("ADMIN")
+//                .antMatchers("/director/").hasAnyAuthority("EXCLUSIVE")
+//                .antMatchers("/h2-console/**").permitAll()
+//                .antMatchers("/").permitAll()
+//                .anyRequest().permitAll()
+//                .and()
+//                .logout()
+//                .logoutSuccessUrl("/profile")
+//                .and()
+//                .formLogin();
+//
+//        http.csrf().disable();
+//        http.headers().frameOptions().disable();
 
-        http.csrf().disable();
-        http.headers().frameOptions().disable();
-    }
+            http.authorizeRequests()
+//                .antMatchers("/orders/**").authenticated()
+                    .anyRequest().permitAll()
+                    .and()
+                    .formLogin()
+                    .and()
+                    .csrf().disable();
+        }
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {

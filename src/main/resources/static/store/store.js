@@ -1,13 +1,13 @@
 angular.module('app').controller('storeController', function ($scope, $http) {
     const contextPath = 'http://localhost:8189/market';
 
-    $scope.submitCreateNewProduct = function () {
-        $http.post(contextPath + '/api/v1/products', $scope.newProduct)
-            .then(function (response) {
-                $scope.newProduct = null;
-                $scope.filter();
-            });
-    };
+    // $scope.submitCreateNewProduct = function () {
+    //     $http.post(contextPath + '/api/v1/products', $scope.newProduct)
+    //         .then(function (response) {
+    //             $scope.newProduct = null;
+    //             $scope.filter();
+    //         });
+    // };
 
     $scope.range = function (min, max, step) {
         step = step || 1;
@@ -34,10 +34,20 @@ angular.module('app').controller('storeController', function ($scope, $http) {
         });
     };
 
+    // $scope.addToCart = function (productId) {
+    //     $http.get(contextPath + '/api/v1/restcart/add/' + productId)
+    //         .then(function (response) {
+    //             alert('Товар добавлен в корзину')
+    //         });
+    // };
+
     $scope.addToCart = function (productId) {
-        $http.get(contextPath + '/api/v1/restcart/add/' + productId)
+        $http({
+            url: contextPath + '/api/v1/cart/add/' + productId,
+            method: 'GET'
+        })
             .then(function (response) {
-                alert('Товар добавлен в корзину')
+                console.log('ok');
             });
     };
 

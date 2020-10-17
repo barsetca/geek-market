@@ -31,15 +31,14 @@ public class CartController {
     public void addProductToCart(@PathVariable(name = "product_id") Long productId,
                                  HttpServletRequest request, HttpServletResponse response)
             throws IOException {
-        Product product = productService.findById(productId).orElseThrow(() ->
-                new ResourceNotFoundException("Продукт с id = " + productId + " не найден"));
-        cart.add(product);
+
+        cart.addOrIncrement(productId);
         response.sendRedirect(request.getHeader("referer"));
     }
 
     @GetMapping("/inc/{product_id}")
     public String incrementProduct(@PathVariable(name = "product_id") Long productId) {
-        cart.increment(productId);
+        cart.addOrIncrement(productId);
         return "redirect:/cart";
 
     }

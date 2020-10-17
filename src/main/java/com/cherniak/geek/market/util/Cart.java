@@ -1,7 +1,9 @@
 package com.cherniak.geek.market.util;
 
+import com.cherniak.geek.market.exception.ResourceNotFoundException;
 import com.cherniak.geek.market.model.OrderItem;
 import com.cherniak.geek.market.model.Product;
+import com.cherniak.geek.market.service.ProductService;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.context.annotation.Scope;
@@ -17,9 +19,9 @@ import java.util.stream.Collectors;
 
 @Component
 @Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS)
-@NoArgsConstructor
 @Data
 public class Cart {
+    private final ProductService productService;
     private List<OrderItem> items;
     private int price;
     private int totalQuantity;
@@ -29,19 +31,7 @@ public class Cart {
         items = new ArrayList<>();
     }
 
-    public void add(Product product) {
-        for (OrderItem item : items) {
-            if (item.getProduct().getId().equals(product.getId())) {
-                item.incrementQuantity();
-                recalculate();
-                return;
-            }
-        }
-        items.add(new OrderItem(product));
-        recalculate();
-    }
-
-    public void increment(Long productId) {
+    public void addOrIncrement(Long productId) {
         for (OrderItem item : items) {
             if (item.getProduct().getId().equals(productId)) {
                 item.incrementQuantity();
@@ -49,6 +39,9 @@ public class Cart {
                 return;
             }
         }
+        Product p = productService.findById(productId).orElseThrow(() ->
+                new ResourceNotFoundException("Unable to find product with id: " + productId + " (add to cart)"));
+        items.add(new OrderItem(p));
         recalculate();
     }
 
@@ -72,7 +65,7 @@ public class Cart {
         recalculate();
     }
 
-    private void recalculate() {
+    public void recalculate() {
         price = 0;
         totalQuantity = 0;
         for (OrderItem item : items) {
