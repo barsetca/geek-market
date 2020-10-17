@@ -20,7 +20,19 @@
             <td>{{oi.cost}}</td>
             <td>{{oi.quantity}}</td>
             <td>{{oi.totalCost}}</td>
+            <td>
+                <a class="btn btn-danger btn-sm" ng-click="deleteOrderItem(oi.product.id)">&times;</a>
+            </td>
+        </tr>
+
+        <tr>
+        <tr align="center">
             <td></td>
+            <td>Итого</td>
+            <td>{{cart.totalQuantity}}</td>
+            <td>{{cart.price}}</td>
+            <td></td>
+        </tr>
         </tr>
         </tbody>
     </table>

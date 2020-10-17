@@ -8,10 +8,7 @@ import com.cherniak.geek.market.service.ProductService;
 import com.cherniak.geek.market.util.Cart;
 import com.cherniak.geek.market.util.CartDto;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,19 +18,18 @@ import java.util.List;
 @RequestMapping("/api/v1/restcart")
 @AllArgsConstructor
 public class RestCartController {
-//@Autowired
+
     private ProductService productService;
-//@Autowired
     private Cart cart;
 
     @GetMapping
     public CartDto getCurrentCart() {
-
         List<OrderItemDto> orderItemDtos = OrderItemMapper.MAPPER.fromOrderItemList(cart.getItems());
         CartDto cartDto = new CartDto();
         cartDto.setPrice(cart.getPrice());
         cartDto.setTotalQuantity(cart.getTotalQuantity());
         cartDto.setItems(orderItemDtos);
+
         return cartDto;
     }
 
@@ -49,7 +45,6 @@ public class RestCartController {
     public String incrementProduct(@PathVariable(name = "product_id") Long productId) {
         cart.increment(productId);
         return "redirect:/cart";
-
     }
 
     @GetMapping("/dec/{product_id}")
@@ -58,10 +53,9 @@ public class RestCartController {
         return "redirect:/cart";
     }
 
-    @GetMapping("/remove/{product_id}")
-    public String removeProduct(@PathVariable(name = "product_id") Long productId) {
+    @DeleteMapping("/{product_id}")
+    public void removeProduct(@PathVariable(name = "product_id") Long productId) {
         cart.remove(productId);
-        return "redirect:/cart";
     }
 
     @GetMapping("/clear")

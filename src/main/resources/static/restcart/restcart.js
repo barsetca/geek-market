@@ -13,6 +13,13 @@ angular.module('app').controller('restcartController', function ($scope, $http) 
         });
     };
 
+    $scope.deleteOrderItem = function (productId) {
+        $http.delete(contextPath + '/api/v1/restcart/' + productId)
+            .then(function (response) {
+                $scope.fillCartTable();
+            });
+    };
+
     $scope.fillCartTable();
 
 });
