@@ -1,7 +1,5 @@
 package com.cherniak.geek.market.contoller;
 
-import com.cherniak.geek.market.exception.ResourceNotFoundException;
-import com.cherniak.geek.market.model.Product;
 import com.cherniak.geek.market.service.ProductService;
 import com.cherniak.geek.market.util.Cart;
 import lombok.AllArgsConstructor;

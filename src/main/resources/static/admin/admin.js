@@ -8,7 +8,7 @@ angular.module('app').controller('adminController', function ($scope, $http) {
             method: 'GET'
         })
             .then(function (response) {
-              console.log(response.data);
+                console.log(response.data);
                 $scope.categories = response.data;
             });
     };

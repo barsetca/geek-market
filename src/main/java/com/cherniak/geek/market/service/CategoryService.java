@@ -18,15 +18,15 @@ public class CategoryService {
         this.categoryRepository = categoryRepository;
     }
 
-    public List<Category> findAll(){
+    public List<Category> findAll() {
         return categoryRepository.findAll();
     }
 
-    public Optional<Category> findById(Long id){
+    public Optional<Category> findById(Long id) {
         return categoryRepository.findById(id);
     }
 
-    public Optional<Category> findByTitle(String title){
+    public Optional<Category> findByTitle(String title) {
         return categoryRepository.findByTitle(title);
     }
 }

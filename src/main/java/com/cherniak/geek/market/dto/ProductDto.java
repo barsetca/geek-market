@@ -5,13 +5,22 @@ import com.cherniak.geek.market.model.Product;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Size;
+
 @Data
 @NoArgsConstructor
 public class ProductDto {
 
     private Long id;
+
+    @Size(min = 2, max = 1000)
     private String title;
+
+    @Min(1)
     private Integer cost;
+
+    @Size(min = 1, max = 100)
     private String categoryTitle;
 
     public ProductDto(Product product) {
