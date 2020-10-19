@@ -36,7 +36,7 @@ public class RestProductController {
         page = page < 1 ? 1 : page;
         params.forEach((k, v) -> System.out.println("key = " + k + "  value = " + v));
 
-        ProductFilter productFilter = new ProductFilter(params, categoryService);
+        ProductFilter productFilter = new ProductFilter(params);
         Page<Product> products = productService.findAll(productFilter.getSpec(), page - 1, 5);
         List<ProductDto> productDtos = products.getContent().stream().map(ProductDto::new).collect(Collectors.toList());
         Pageable pageable = PageRequest.of(page - 1, 5);
@@ -79,6 +79,7 @@ public class RestProductController {
         Product product = ProductDto.fromDto(productDto, category);
         productService.save(product);
         productDto.setId(product.getId());
+
         return productDto;
     }
 

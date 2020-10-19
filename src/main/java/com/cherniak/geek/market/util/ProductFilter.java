@@ -16,7 +16,7 @@ public class ProductFilter {
     private Specification<Product> spec;
     private String filterDefinition;
 
-    public ProductFilter(Map<String, String> params, CategoryService categoryService) {
+    public ProductFilter(Map<String, String> params) {
         StringBuilder filterDefinitionBuilder = new StringBuilder();
         spec = Specification.where(null);
 
@@ -42,12 +42,10 @@ public class ProductFilter {
             filterDefinitionBuilder.append("&title=").append(titlePart);
         }
 
-        String categoryTitle = params.get("categoryTitle");
-        if (params.containsKey("categoryTitle") && !categoryTitle.isBlank()) {
-            Category category = categoryService.findByTitle(categoryTitle).orElseThrow(() ->
-                    new ResourceCreationException(String.format("Category with title %s not exists", categoryTitle)));
-            spec = spec.and(ProductSpecification.categoryIdEquals(category));
-            filterDefinitionBuilder.append("&categoryTitle=").append(params.get("categoryTitle"));
+        String categoryId = params.get("categoryId");
+        if (params.containsKey("categoryId") && !categoryId.isBlank()) {
+            spec = spec.and(ProductSpecification.categoryIdEquals(Long.parseLong(categoryId)));
+            filterDefinitionBuilder.append("&categoryId=").append(params.get("categoryId"));
         }
         filterDefinition = filterDefinitionBuilder.toString();
     }

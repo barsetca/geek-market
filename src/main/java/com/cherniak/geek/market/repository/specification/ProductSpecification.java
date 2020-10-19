@@ -22,10 +22,9 @@ public class ProductSpecification {
                 criteriaBuilder.like(root.get("title"), String.format("%%%s%%", titlePart));
     }
 
-    public static Specification<Product> categoryIdEquals(Category category) {
-        System.out.println("categoryId " + category.getId());
-        return (Specification<Product>) (root, criteriaQuery, criteriaBuilder) ->
-                criteriaBuilder.equal(root.get("category"), category);
+    public static Specification<Product> categoryIdEquals(long categoryId) {
 
+        return (Specification<Product>) (root, criteriaQuery, criteriaBuilder) ->
+                criteriaBuilder.equal(root.get("category"), categoryId);
     }
 }
