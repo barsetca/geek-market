@@ -26,6 +26,10 @@ public class Product {
     @Min(1)
     private Integer cost;
 
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
+
     public Product(String title, int cost) {
         this(null, title, cost);
     }

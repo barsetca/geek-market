@@ -1,6 +1,7 @@
 DROP TABLE IF EXISTS order_items;
 DROP TABLE IF EXISTS orders;
 DROP TABLE IF EXISTS products;
+DROP TABLE IF EXISTS categories;
 DROP TABLE IF EXISTS users_roles;
 DROP TABLE IF EXISTS roles;
 DROP TABLE IF EXISTS users;
@@ -28,11 +29,18 @@ CREATE TABLE IF NOT EXISTS users_roles
     FOREIGN KEY (role_id) REFERENCES roles(id)
 );
 
+CREATE TABLE IF NOT EXISTS categories
+(
+    id    bigserial PRIMARY KEY,
+    title VARCHAR(255) UNIQUE NOT NULL
+   );
+
 CREATE TABLE IF NOT EXISTS products
 (
     id    bigserial PRIMARY KEY,
     title VARCHAR(255) UNIQUE NOT NULL,
-    cost  INTEGER
+    cost  INTEGER,
+    category_id BIGINT REFERENCES categories(id)
 );
 
 CREATE TABLE IF NOT EXISTS orders
