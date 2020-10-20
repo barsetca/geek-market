@@ -1,10 +1,7 @@
 package com.cherniak.geek.market.util;
 
-import com.cherniak.geek.market.exception.ResourceCreationException;
-import com.cherniak.geek.market.model.Category;
 import com.cherniak.geek.market.model.Product;
 import com.cherniak.geek.market.repository.specification.ProductSpecification;
-import com.cherniak.geek.market.service.CategoryService;
 import lombok.Getter;
 import org.springframework.data.jpa.domain.Specification;
 
@@ -42,10 +39,17 @@ public class ProductFilter {
             filterDefinitionBuilder.append("&title=").append(titlePart);
         }
 
-        String categoryId = params.get("categoryId");
-        if (params.containsKey("categoryId") && !categoryId.isBlank()) {
-            spec = spec.and(ProductSpecification.categoryIdEquals(Long.parseLong(categoryId)));
-            filterDefinitionBuilder.append("&categoryId=").append(params.get("categoryId"));
+        String categoriesId = params.get("categoriesId");
+        if (params.containsKey("categoriesId") && !categoriesId.isBlank()) {
+            String[] categoryIdArray = categoriesId.trim().split(" ");
+            filterDefinitionBuilder.append("&categoriesId=");
+            Specification<Product> specCategories = Specification.where(null);
+            for (String categoryId : categoryIdArray) {
+                specCategories = specCategories.or(ProductSpecification.categoryIdEquals(Long.parseLong(categoryId)));
+                filterDefinitionBuilder.append(categoriesId).append(" ");
+            }
+            spec = spec.and(specCategories);
+
         }
         filterDefinition = filterDefinitionBuilder.toString();
     }

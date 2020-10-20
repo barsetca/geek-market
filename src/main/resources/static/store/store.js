@@ -20,7 +20,7 @@ angular.module('app').controller('storeController', function ($scope, $http) {
                 title: $scope.newFilter != null ? $scope.newFilter.title : '',
                 min_cost: $scope.newFilter != null ? $scope.newFilter.min_cost : '',
                 max_cost: $scope.newFilter != null ? $scope.newFilter.max_cost : '',
-                categoryId: $scope.newFilter != null ? $scope.newFilter.categoryId : ''
+                categoriesId: $scope.newFilter != null ? $scope.newFilter.categoriesId : [""]
             }
         }).then(function (response) {
             $scope.Products = response.data;

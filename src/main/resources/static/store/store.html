@@ -1,11 +1,15 @@
 <div>
     <h3>Фильтры</h3>
+
     <form novalidate ng-submit="filter()">
         <div class="form-group col-md-6">
-            <label for="exampleFormControlSelect1">Категория</label>
-            <select class="form-control" id="exampleFormControlSelect1" ng-model="newFilter.categoryId">
-                <option ng-repeat="c in categories" value ="{{c.id}}">{{c.title}}</option>
+            <label for="filterCategories">Категории</label>
+
+            <select class="form-control" id="filterCategories" multiple="multiple" ng-model="newFilter.categoriesId">
+                <option selected value="">Все категории</option>
+                <option ng-repeat="c in categories" value="{{c.id}}">{{c.title}}</option>
             </select>
+            <small id="emailHelp" class="form-text text-muted">Используйте Ctrl + левую кнопку мыши для выбора нескольких категорий</small>
         </div>
         <div class="form-group col-md-6">
             <label for="filterTitle">Название содержит</label>

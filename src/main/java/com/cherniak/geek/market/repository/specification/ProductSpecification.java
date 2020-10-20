@@ -1,9 +1,7 @@
 package com.cherniak.geek.market.repository.specification;
 
-import com.cherniak.geek.market.model.Category;
 import com.cherniak.geek.market.model.Product;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.transaction.annotation.Transactional;
 
 public class ProductSpecification {
 

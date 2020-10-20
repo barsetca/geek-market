@@ -29,12 +29,19 @@ public class RestProductController {
     ProductService productService;
     CategoryService categoryService;
 
-
     @GetMapping
     public Page<ProductDto> getAll(@RequestParam(defaultValue = "1", name = "page") Integer page,
-                                   @RequestParam Map<String, String> params) {
+                                   @RequestParam Map<String, String> params,
+                                   @RequestParam(required = false) String[] categoriesId) {
         page = page < 1 ? 1 : page;
-        params.forEach((k, v) -> System.out.println("key = " + k + "  value = " + v));
+
+        if (categoriesId != null && categoriesId.length != 0) {
+            StringBuilder sb = new StringBuilder();
+            for (String categoryId : categoriesId) {
+                sb.append(categoryId).append(" ");
+            }
+            params.put("categoriesId", sb.toString());
+        }
 
         ProductFilter productFilter = new ProductFilter(params);
         Page<Product> products = productService.findAll(productFilter.getSpec(), page - 1, 5);
