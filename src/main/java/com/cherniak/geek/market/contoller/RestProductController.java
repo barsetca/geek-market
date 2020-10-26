@@ -1,16 +1,25 @@
 package com.cherniak.geek.market.contoller;
 
+import com.cherniak.geek.market.dto.ProductDto;
 import com.cherniak.geek.market.exception.ResourceCreationException;
+import com.cherniak.geek.market.exception.ResourceNotFoundException;
+import com.cherniak.geek.market.model.Category;
 import com.cherniak.geek.market.model.Product;
+import com.cherniak.geek.market.service.CategoryService;
 import com.cherniak.geek.market.service.ProductService;
 import com.cherniak.geek.market.util.ProductFilter;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/products")
@@ -18,23 +27,38 @@ import java.util.Map;
 public class RestProductController {
 
     ProductService productService;
+    CategoryService categoryService;
 
     @GetMapping
-    public Page<Product> getAll(@RequestParam(defaultValue = "1", name = "page") Integer page,
-                                @RequestParam Map<String, String> params) {
+    public Page<ProductDto> getAll(@RequestParam(defaultValue = "1", name = "page") Integer page,
+                                   @RequestParam Map<String, String> params,
+                                   @RequestParam(required = false) String[] categoriesId) {
         page = page < 1 ? 1 : page;
+
+        if (categoriesId != null && categoriesId.length != 0) {
+            StringBuilder sb = new StringBuilder();
+            for (String categoryId : categoriesId) {
+                sb.append(categoryId).append(" ");
+            }
+            params.put("categoriesId", sb.toString());
+        }
+
         ProductFilter productFilter = new ProductFilter(params);
-        return productService.findAll(productFilter.getSpec(), page - 1, 5);
+        Page<Product> products = productService.findAll(productFilter.getSpec(), page - 1, 5);
+        List<ProductDto> productDtos = products.getContent().stream().map(ProductDto::new).collect(Collectors.toList());
+        Pageable pageable = PageRequest.of(page - 1, 5);
+
+        return new PageImpl<>(productDtos, pageable, products.getTotalElements());
     }
 
     @GetMapping("/{id}")
     public Product getById(@PathVariable Long id) {
-        return productService.findById(id).get();
+        return productService.findById(id).orElseThrow(() -> new ResourceNotFoundException(String.format("Product with id = %d not exists", id)));
     }
 
     @PostMapping
-    public Product create(@RequestBody @Validated Product product, BindingResult result) {
-        if(result.hasErrors()){
+    public ProductDto create(@RequestBody @Validated ProductDto productDto, BindingResult result) {
+        if (result.hasErrors()) {
             StringBuilder sb = new StringBuilder();
             result.getFieldErrors().forEach(
                     fe -> {
@@ -48,22 +72,27 @@ public class RestProductController {
                     });
             throw new ResourceCreationException(sb.toString());
         }
-        Long id = product.getId();
-
-        if (id !=null && productService.existsById(id)){
+        Long id = productDto.getId();
+        if (id != null && productService.existsById(id)) {
             throw new ResourceCreationException(String.format("Product with id = %d already exists", id));
         }
-        String title = product.getTitle();
-        if (productService.existsByTitle(product.getTitle())){
-            throw new ResourceCreationException(String.format("Product with title %s already exists",title));
+        String title = productDto.getTitle();
+        if (productService.existsByTitle(title)) {
+            throw new ResourceCreationException(String.format("Product with title %s already exists", title));
         }
-        product.setId(null);
-        return productService.save(product);
+        String categoryTitle = productDto.getCategoryTitle();
+        Category category = categoryService.findByTitle(categoryTitle).orElseThrow(() ->
+                new ResourceCreationException(String.format("Category with title %s not exists", categoryTitle)));
+        Product product = ProductDto.fromDto(productDto, category);
+        productService.save(product);
+        productDto.setId(product.getId());
+
+        return productDto;
     }
 
     @PutMapping
     public void update(@RequestBody @Validated Product product, BindingResult result) {
-        if(result.hasErrors()){
+        if (result.hasErrors()) {
             StringBuilder sb = new StringBuilder();
             result.getFieldErrors().forEach(
                     fe -> {

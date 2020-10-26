@@ -36,10 +36,10 @@ public class ProductController {
             size = 1;
             params.put("size", "1");
         }
-        ProductFilter productFilter = new ProductFilter(params);
-        Page<Product> products = productService.findAll(productFilter.getSpec(), page - 1, size);
-        model.addAttribute("products", products);
-        model.addAttribute("filterDefinition", productFilter.getFilterDefinition());
+        //ProductFilter productFilter = new ProductFilter(params);
+//        Page<Product> products = productService.findAll(productFilter.getSpec(), page - 1, size);
+//        model.addAttribute("products", products);
+//        model.addAttribute("filterDefinition", productFilter.getFilterDefinition());
         return "products";
     }
 

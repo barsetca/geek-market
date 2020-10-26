@@ -7,11 +7,11 @@ import org.springframework.data.jpa.domain.Specification;
 
 import java.util.Map;
 
+
 @Getter
 public class ProductFilter {
     private Specification<Product> spec;
     private String filterDefinition;
-
 
     public ProductFilter(Map<String, String> params) {
         StringBuilder filterDefinitionBuilder = new StringBuilder();
@@ -37,6 +37,19 @@ public class ProductFilter {
         if (params.containsKey("title") && !titlePart.isBlank()) {
             spec = spec.and(ProductSpecification.titleLike(titlePart));
             filterDefinitionBuilder.append("&title=").append(titlePart);
+        }
+
+        String categoriesId = params.get("categoriesId");
+        if (params.containsKey("categoriesId") && !categoriesId.isBlank()) {
+            String[] categoryIdArray = categoriesId.trim().split(" ");
+            filterDefinitionBuilder.append("&categoriesId=");
+            Specification<Product> specCategories = Specification.where(null);
+            for (String categoryId : categoryIdArray) {
+                specCategories = specCategories.or(ProductSpecification.categoryIdEquals(Long.parseLong(categoryId)));
+                filterDefinitionBuilder.append(categoriesId).append(" ");
+            }
+            spec = spec.and(specCategories);
+
         }
         filterDefinition = filterDefinitionBuilder.toString();
     }
