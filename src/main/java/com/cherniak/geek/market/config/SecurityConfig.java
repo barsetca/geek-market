@@ -1,61 +1,47 @@
 package com.cherniak.geek.market.config;
 
-import com.cherniak.geek.market.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @EnableWebSecurity //(debug = true)
+@RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private UserService userService;
+  private final JwtRequestFilter jwtRequestFilter;
 
-    @Autowired
-    public void setUserDetailsService(UserService userService) {
-        this.userService = userService;
-    }
+  @Override
+  protected void configure(HttpSecurity http) throws Exception {
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-//        http.authorizeRequests()
-//                .antMatchers("/products/**", "/cart/**", "/order_items/**").authenticated()
-//                .antMatchers("/admin/**").hasAnyRole("ADMIN")
-//                .antMatchers("/director/").hasAnyAuthority("EXCLUSIVE")
-//                .antMatchers("/h2-console/**").permitAll()
-//                .antMatchers("/").permitAll()
-//                .anyRequest().permitAll()
-//                .and()
-//                .logout()
-//                .logoutSuccessUrl("/profile")
-//                .and()
-//                .formLogin();
-//
-//        http.csrf().disable();
+    http.authorizeRequests()
+        .antMatchers("/api/v1/**").authenticated()
+        .anyRequest().permitAll()
+        .and()
+        .csrf().disable()
+        .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+    http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+
+//        http.authorizeRequests().antMatchers("/h2-console/**").permitAll()
+//        .antMatchers("/orders/**").authenticated()
+//        .antMatchers("/admin/**").hasAnyRole("ADMIN")
+//        .antMatchers("/director/").hasAnyAuthority("EXCLUSIVE")
 //        http.headers().frameOptions().disable();
+  }
 
-            http.authorizeRequests()
-//                .antMatchers("/orders/**").authenticated()
-                    .anyRequest().permitAll()
-                    .and()
-                    .formLogin()
-                    .and()
-                    .csrf().disable();
-        }
+  @Bean
+  public BCryptPasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
+  }
 
-    @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    public DaoAuthenticationProvider daoAuthenticationProvider() {
-        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-
-        authenticationProvider.setPasswordEncoder(passwordEncoder());
-        authenticationProvider.setUserDetailsService(userService);
-        return authenticationProvider;
-    }
+  @Override
+  @Bean
+  public AuthenticationManager authenticationManagerBean() throws Exception {
+    return super.authenticationManagerBean();
+  }
 }
