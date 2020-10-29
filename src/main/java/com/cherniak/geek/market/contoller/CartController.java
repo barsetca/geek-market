@@ -1,60 +1,38 @@
 package com.cherniak.geek.market.contoller;
 
-import com.cherniak.geek.market.service.ProductService;
+import com.cherniak.geek.market.dto.CartDto;
 import com.cherniak.geek.market.util.Cart;
-import java.io.IOException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
-@RequestMapping("/cart")
+
+@RestController
+@RequestMapping("api/v1/cart")
 @AllArgsConstructor
 public class CartController {
+    private Cart cart;
 
-  private ProductService productService;
-  private Cart cart;
+    @GetMapping("/add/{product_id}")
+    public void addToCart(@PathVariable(name = "product_id") Long productId) {
+        cart.addOrIncrement(productId);
+    }
 
-  @GetMapping
-  public String showCart() {
-    return "cart";
-  }
+    @GetMapping("/dec/{product_id}")
+    public void decrementOrRemoveProduct(@PathVariable(name = "product_id") Long productId) {
+        cart.removeOrDecrement(productId);
+    }
 
-  @GetMapping("/add/{product_id}")
-  public void addProductToCart(@PathVariable(name = "product_id") Long productId,
-      HttpServletRequest request, HttpServletResponse response)
-      throws IOException {
+    @GetMapping("/remove/{product_id}")
+    public void removeProduct(@PathVariable(name = "product_id") Long productId) {
+        cart.remove(productId);
+    }
 
-    cart.addOrIncrement(productId);
-    response.sendRedirect(request.getHeader("referer"));
-  }
-
-  @GetMapping("/inc/{product_id}")
-  public String incrementProduct(@PathVariable(name = "product_id") Long productId) {
-    cart.addOrIncrement(productId);
-    return "redirect:/cart";
-
-  }
-
-  @GetMapping("/dec/{product_id}")
-  public String removeOrDecrementProduct(@PathVariable(name = "product_id") Long productId) {
-    cart.removeOrDecrement(productId);
-    return "redirect:/cart";
-  }
-
-  @GetMapping("/remove/{product_id}")
-  public String removeProduct(@PathVariable(name = "product_id") Long productId) {
-    cart.remove(productId);
-    return "redirect:/cart";
-  }
-
-  @GetMapping("/clear")
-  public String clearCart() {
-    cart.clear();
-    return "redirect:/cart";
-  }
+    @GetMapping
+    public CartDto getCartDto() {
+        cart.recalculate();
+        return new CartDto(cart);
+    }
 }

@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/v1/products")
 @AllArgsConstructor
-public class RestProductController {
+public class ProductController {
 
     ProductService productService;
     CategoryService categoryService;

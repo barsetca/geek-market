@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/v1/categories")
-public class RestCategoryController {
+public class CategoryController {
 
     private CategoryService categoryService;
 
