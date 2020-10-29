@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -74,5 +75,14 @@ public class JwtTokenUtil {
   private boolean isTokenExpired(String token) {
     Date date = getExpirationDateFromToken(token);
     return date != null && date.before(new Date());
+  }
+
+  public String getJwt(HttpServletRequest httpServletRequest) {
+    String authHeader = httpServletRequest.getHeader("Authorization");
+    String jwt = null;
+    if (authHeader != null && authHeader.startsWith("Bearer ")) {
+      jwt = authHeader.substring(7);
+    }
+    return jwt;
   }
 }
