@@ -38,7 +38,7 @@
     <div class="row">
       <div class="col">
         <input type="text" required ng-model="newOrder.receiver" class="form-control"
-               placeholder="Имя пользователя">
+               placeholder="Имя получателя" ng-value="getCurrentUserName()">
       </div>
       <div class="col">
         <input type="text" required ng-model="newOrder.phone" class="form-control"
@@ -52,7 +52,8 @@
     </div>
 
     <button class="btn btn-success" ng-disabled="myForm.$invalid" type="button" data-toggle="modal"
-            data-target="#alertOrder">Оформить</button>
+            data-target="#alertOrder">Оформить
+    </button>
 
     <!--         Modal-->
     <div class="modal" id="alertOrder" tabindex="-1" role="dialog" aria-labelledby="alertOrderLabel"

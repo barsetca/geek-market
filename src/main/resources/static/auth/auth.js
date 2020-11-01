@@ -8,6 +8,7 @@ angular.module('app').controller('authController',
           if (response.data.token) {
             $http.defaults.headers.common.Authorization = 'Bearer '
                 + response.data.token;
+
             $localStorage.currentUser = {
               username: $scope.user.username,
               token: response.data.token

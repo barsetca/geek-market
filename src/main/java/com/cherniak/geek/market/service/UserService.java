@@ -4,10 +4,13 @@ import com.cherniak.geek.market.model.Role;
 import com.cherniak.geek.market.model.User;
 import com.cherniak.geek.market.repository.UserRepository;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.management.relation.RoleNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,14 +20,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@RequiredArgsConstructor
 public class UserService implements UserDetailsService {
 
-  UserRepository userRepository;
-
-  @Autowired
-  public void setUserRepository(UserRepository userRepository) {
-    this.userRepository = userRepository;
-  }
+  private final UserRepository userRepository;
+  private final RoleService roleService;
 
   public Optional<User> getByUsername(String username) {
     return userRepository.findByUsername(username);
@@ -38,7 +38,6 @@ public class UserService implements UserDetailsService {
     return userRepository.existsByEmail(email);
   }
 
-
   @Transactional
   public User save(User user) {
     return userRepository.save(user);
@@ -46,6 +45,17 @@ public class UserService implements UserDetailsService {
 
   public List<User> findAll() {
     return userRepository.findAll();
+  }
+
+  @Transactional
+  public User create(User user) throws RoleNotFoundException {
+    Set<Role> roles = new HashSet<>();
+    Role role = roleService.findByName("ROLE_USER").orElseThrow(() ->
+        new RoleNotFoundException("ROLE_USER not found"));
+    roles.add(role);
+    user.setRoles(roles);
+
+    return save(user);
   }
 
   @Override
