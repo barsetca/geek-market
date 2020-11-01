@@ -1,0 +1,35 @@
+<div>
+  <br/>
+  <h3>Заказы</h3>
+  <table class="table table-hover" cellpadding="0" cellspacing="0">
+    <thead class="thead-light">
+    <tr align="center">
+      <th>№ заказа</th>
+      <th>Дата заказа</th>
+      <th>Сумма заказа</th>
+      <th>Получатель</th>
+      <th>Телефон</th>
+      <th>Адрес</th>
+<!--      <th>Содержимое</th>-->
+    </tr>
+    </thead>
+    <tbody>
+
+    <tr align="center" ng-repeat="o in orders">
+      <td>{{o.orderId}}</td>
+      <td>{{o.date}}</td>
+      <td>{{o.cost}}</td>
+      <td>{{o.receiver}}</td>
+      <td>{{o.phone}}</td>
+      <td>{{o.address}}</td>
+<!--      <td ng-repeat="oi in o.items">-->
+<!--        <span>{{oi.productTitle + '  ' + oi.cost + ' * ' + oi.quantity + ' = ' + oi.totalCost}}</span>-->
+<!--      </td>-->
+    </tr>
+    </tbody>
+  </table>
+  <hr/>
+
+
+
+</div>

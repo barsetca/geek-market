@@ -1,35 +1,82 @@
 <div>
-    <h3>Корзина</h3>
-    <table class="table table-hover" cellpadding="0" cellspacing="0">
-        <tr align="center">
-                    <th>Название</th>
-                    <th>Цена</th>
-                    <th>Количество</th>
-                    <th>Итого</th>
-                    <th>Действие</th>
-        </tr>
-        <tbody>
+  <h3>Корзина</h3>
+  <table class="table table-hover" cellpadding="0" cellspacing="0">
+    <tr align="center">
+      <th>Название</th>
+      <th>Цена</th>
+      <th>Количество</th>
+      <th>Итого</th>
+      <th>Действие</th>
+    </tr>
+    <tbody>
 
-        <tr ng-repeat="oi in cart.items" align="center">
-            <td>{{oi.productTitle}}</td>
-            <td>{{oi.cost}}</td>
-            <td>
-                <button class="btn btn-link" ng-click="decrementItem(oi.productId)"><b>[-]</b></button>
-                {{oi.quantity}}
-                <button class="btn btn-link" ng-click="incrementItem(oi.productId)"><b>[+]</b></button>
-            <td>{{oi.totalCost}}</td>
-            <td>
-                <button class="btn btn-danger btn-sm" ng-click="removeItem(oi.productId)">&times;</button>
-            </td>
-<!--            <td>{{oi.pricePerProduct + ' * ' + oi.quantity + ' = ' + oi.price}}</td>-->
-        </tr>
-        <tr align="center">
-            <td></td>
-            <td>Итого</td>
-            <td>{{cart.totalQuantity}}</td>
-            <td>{{cart.price}}</td>
-        </tr>
-        </tbody>
-    </table>
+    <tr ng-repeat="oi in cart.items" align="center">
+      <td>{{oi.productTitle}}</td>
+      <td>{{oi.cost}}</td>
+      <td>
+        <button class="btn btn-link" ng-click="decrementItem(oi.productId)"><b>[-]</b></button>
+        {{oi.quantity}}
+        <button class="btn btn-link" ng-click="incrementItem(oi.productId)"><b>[+]</b></button>
+      <td>{{oi.totalCost}}</td>
+      <td>
+        <button class="btn btn-danger btn-sm" ng-click="removeItem(oi.productId)">&times;</button>
+      </td>
+      <!--            <td>{{oi.cost + ' * ' + oi.quantity + ' = ' + oi.totalCost}}</td>-->
+    </tr>
+    <tr align="center">
+      <td></td>
+      <td>Итого</td>
+      <td>{{cart.totalQuantity}}</td>
+      <td>{{cart.price}}</td>
+    </tr>
+    </tbody>
+  </table>
+
+  <h4>Введите данные для оформления заказа</h4>
+
+  <form name="myForm" novalidate ng-submit="submitCreateNewOrder()">
+    <div class="row">
+      <div class="col">
+        <input type="text" required ng-model="newOrder.receiver" class="form-control"
+               placeholder="Имя пользователя">
+      </div>
+      <div class="col">
+        <input type="text" required ng-model="newOrder.phone" class="form-control"
+               placeholder="Телефон">
+      </div>
+    </div>
+    <br/>
+    <div class="form-group">
+      <input type="text" required ng-model="newOrder.address" class="form-control"
+             placeholder="Адрес">
+    </div>
+
+    <button class="btn btn-success" ng-disabled="myForm.$invalid" type="button" data-toggle="modal"
+            data-target="#alertOrder">Оформить</button>
+
+    <!--         Modal-->
+    <div class="modal" id="alertOrder" tabindex="-1" role="dialog" aria-labelledby="alertOrderLabel"
+         aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="alertOrderLabel">Отправка заказа</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <b>Внимание!</b> После подтверждения Ваш заказ будет сформирован, корзина очистится.
+            Ваш заказ можно увидеть первой строкой в истории заказов (вкладка Заказы).
+            <h6>Спасибо, что Вы с нами!</h6>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Вернуться</button>
+            <button type="submit" class="btn btn-primary">Подтвердить</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
 </div>
 
