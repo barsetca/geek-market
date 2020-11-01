@@ -21,17 +21,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     http.authorizeRequests()
         .antMatchers("/api/v1/**").authenticated()
+    .antMatchers("/h2-console/**").permitAll()
         .anyRequest().permitAll()
         .and()
         .csrf().disable()
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
-//        http.authorizeRequests().antMatchers("/h2-console/**").permitAll()
+
 //        .antMatchers("/orders/**").authenticated()
 //        .antMatchers("/admin/**").hasAnyRole("ADMIN")
 //        .antMatchers("/director/").hasAnyAuthority("EXCLUSIVE")
-//        http.headers().frameOptions().disable();
+        http.headers().frameOptions().disable();
   }
 
   @Bean
