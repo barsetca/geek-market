@@ -1,0 +1,189 @@
+<div>
+  <br/>
+  <h3>Moй профиль</h3>
+  <hr/>
+  <form>
+    <div class="form-group row">
+      <label for="staticUsername" class="col-sm-3 col-form-label col-form-label-lg">Nickname</label>
+      <div class="col-sm-5">
+        <input type="text" readonly class="form-control form-control-lg" id="staticUsername"
+               value="{{profile.username}}">
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <label for="staticEmail" class="col-sm-3 col-form-label col-form-label-lg">Email</label>
+      <div class="col-sm-5">
+        <input type="text" readonly class="form-control form-control-lg" id="staticEmail"
+               value="{{profile.email}}">
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <label for="staticPhone" class="col-sm-3 col-form-label col-form-label-lg">Телефон</label>
+      <div class="col-sm-5">
+        <input type="text" readonly class="form-control form-control-lg" id="staticPhone"
+               value="{{profile.phone}}">
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <label for="staticFirstname" class="col-sm-3 col-form-label col-form-label-lg">Имя</label>
+      <div class="col-sm-5">
+        <input type="text" readonly class="form-control form-control-lg" id="staticFirstname"
+               value="{{profile.firstname}}">
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <label for="staticSurname" class="col-sm-3 col-form-label col-form-label-lg">Фамилия</label>
+      <div class="col-sm-5">
+        <input type="text" readonly class="form-control form-control-lg" id="staticSurname"
+               value="{{profile.surname}}">
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <label for="staticBirthday" class="col-sm-3 col-form-label col-form-label-lg">Дата
+        рождения</label>
+      <div class="col-sm-5">
+        <input type="text" readonly class="form-control form-control-lg" id="staticBirthday"
+               value="{{profile.birthday}}">
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <label for="staticSex" class="col-sm-3 col-form-label col-form-label-lg">Пол</label>
+      <div class="col-sm-5">
+        <input type="text" readonly class="form-control form-control-lg" id="staticSex"
+               value="{{profile.sex}}">
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <label for="staticCity" class="col-sm-3 col-form-label col-form-label-lg">Город
+        проживания</label>
+      <div class="col-sm-5">
+        <input type="text" readonly class="form-control form-control-lg" id="staticCity"
+               value="{{profile.city}}">
+      </div>
+    </div>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal"
+            data-whatever="@mdo">Open modal for @mdo
+    </button>
+  </form>
+</div>
+
+
+<div class="modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Изменение профиля</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form name="myForm" novalidate ng-submit="submitChangeProfile()">
+               <div class="form-group row">
+            <label for="profileUsername" class="col-sm-3 col-form-label">Nickname</label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" ng-model="newProfile.username"
+                     id="profileUsername"
+                     placeholder="{{profile.username}}">
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="profileEmail" class="col-sm-3 col-form-label">Email</label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" ng-model="newProfile.email" id="profileEmail"
+                     placeholder="{{profile.email}}">
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="profilePhone" class="col-sm-3 col-form-label">Телефон</label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" ng-model="newProfile.phone" id="profilePhone"
+                     placeholder="{{profile.phone}}">
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="profileFirstname" class="col-sm-3 col-form-label">Имя</label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" ng-model="newProfile.firstname"
+                     id="profileFirstname"
+                     placeholder="{{profile.firstname}}">
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="profileSurname" class="col-sm-3 col-form-label">Фамилия</label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" ng-model="newProfile.surname"
+                     id="profileSurname"
+                     placeholder="{{profile.surname}}">
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="profileBirthday" class="col-sm-3 col-form-label">Дата
+              рождения</label>
+            <div class="col-sm-8">
+              <input type="datetime-local" class="form-control" ng-model="newProfile.birthday"
+                     id="profileBirthday"
+                     placeholder="{{profile.birthday}}">
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="profileSex" class="col-sm-3 col-form-label">Пол</label>
+            <div class="col-sm-8">
+              <select class="form-control " type="text" id="profileSex" ng-model="newProfile.sex">
+                <option selected autofocus value="мужской">мужской</option>
+                <option value="женский">женский</option>
+                          </select>
+            </div>
+          </div>
+
+
+          <div class="form-group row">
+            <label for="profileCity" class="col-sm-3 col-form-label">Город проживания</label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" ng-model="newProfile.city" id="profileCity"
+                     placeholder="{{profile.city}}">
+            </div>
+          </div>
+
+
+          <div class="form-group row">
+            <label for="inputPassword" class="col-sm-3 col-form-label">Password</label>
+
+            <div class="col-sm-8">
+              <small id="emailHelp" class="form-text text-muted">Для изменения профиля введите
+                password</small>
+              <input type="password" required class="form-control" ng-model="newProfile.password"
+                     id="inputPassword">
+
+            </div>
+          </div>
+          <div class="modal-footer">
+
+            <button class="btn btn-success" ng-disabled="myForm.$invalid" type="submit">Изменить
+            </button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Отменить</button>
+          </div>
+
+        </form>
+
+
+      </div>
+
+    </div>
+  </div>
+</div>
+</div>
