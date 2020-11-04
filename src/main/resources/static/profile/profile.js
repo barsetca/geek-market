@@ -43,6 +43,22 @@ angular.module('app').controller('profileController', function ($scope, $http) {
     });
   };
 
+  $scope.tryToAuth = function () {
+    console.log($scope.profile.username);
+    $scope.user.username = $scope.profile.username;
+    console.log($scope.user.username);
+    $http.post(contextPath + '/api/v1/profile', $scope.user)
+    .then(function successCallback(response) {
+      console.log(response.data);
+      $scope.user.password = null;
+      $scope.submitChangeProfile();
+
+    }, function errorCallback(response) {
+      window.alert('Введен Неверный пароль. Нажмите Ок, затем F5 и снова войдите в профиль');
+      $scope.getProfile();
+    });
+  };
+
   $scope.getProfile();
 
 });

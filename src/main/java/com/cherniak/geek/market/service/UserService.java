@@ -1,5 +1,6 @@
 package com.cherniak.geek.market.service;
 
+import com.cherniak.geek.market.model.Profile;
 import com.cherniak.geek.market.model.Role;
 import com.cherniak.geek.market.model.User;
 import com.cherniak.geek.market.repository.UserRepository;
@@ -58,7 +59,9 @@ public class UserService implements UserDetailsService {
         new RoleNotFoundException("ROLE_USER not found"));
     roles.add(role);
     user.setRoles(roles);
-
+    Profile profile = new Profile();
+    profile.setUser(user);
+    user.setProfile(profile);
     return save(user);
   }
 

@@ -1,8 +1,12 @@
 package com.cherniak.geek.market.contoller;
 
+import com.cherniak.geek.market.config.JwtTokenUtil;
 import com.cherniak.geek.market.dto.ProfileDto;
+import com.cherniak.geek.market.exception.MarketError;
 import com.cherniak.geek.market.exception.ResourceCreationException;
 import com.cherniak.geek.market.exception.ResourceNotFoundException;
+import com.cherniak.geek.market.jwt.JwtRequest;
+import com.cherniak.geek.market.jwt.JwtResponse;
 import com.cherniak.geek.market.model.Profile;
 import com.cherniak.geek.market.model.User;
 import com.cherniak.geek.market.service.ProfileService;
@@ -11,7 +15,15 @@ import java.security.Principal;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,19 +38,19 @@ public class ProfileController {
 
   private final ProfileService profileService;
   private final UserService userService;
+  private final AuthenticationManager authenticationManager;
+  private final JwtTokenUtil jwtTokenUtil;
 
   @GetMapping
   public ProfileDto getProfile(Principal principal) {
-    User user = userService.getByUsername(principal.getName()).get();
-//    profileService.findByUserUsername(principal.getName());
-    //profileService.findByUserId(user.getId());
+    User user = userService.getByUsername(principal.getName()).orElseThrow(() ->
+        new UsernameNotFoundException(String.format("User by username %s not exists", principal.getName())));
     return new ProfileDto(profileService.findByUserId(user.getId()));
   }
 
   @PutMapping(consumes = "application/json", produces = "application/json")
-  public void updateProfile(@RequestBody ProfileDto profileDto,
-      @RequestParam Map<String, String> params) {
-    System.out.println(params);
+  public void updateProfile(@RequestBody ProfileDto profileDto) {
+    System.out.println(profileDto);
 
     User user = getUserAfterCheck(profileDto);
     Profile profile = ProfileDto.profileFromDto(profileDto);
@@ -47,6 +59,19 @@ public class ProfileController {
     userService.save(user);
   }
 
+  @PostMapping
+  public ResponseEntity<?> createAuthToken(@RequestBody JwtRequest jwtRequest) {
+      try {
+      authenticationManager.authenticate(
+          new UsernamePasswordAuthenticationToken(jwtRequest.getUsername(),
+              jwtRequest.getPassword()));
+    } catch (BadCredentialsException ex) {
+      return new ResponseEntity<>(
+          new MarketError(HttpStatus.BAD_REQUEST.value(), "Incorrect username or password"),
+          HttpStatus.BAD_REQUEST);
+    }
+    return ResponseEntity.ok(jwtRequest);
+  }
 
   private User getUserAfterCheck(ProfileDto profileDto) {
     User user = userService.getById(profileDto.getUserId()).orElseThrow(() ->

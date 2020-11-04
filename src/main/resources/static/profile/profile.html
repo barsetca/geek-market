@@ -1,8 +1,8 @@
-<div>
-  <br/>
-  <h3>Moй профиль</h3>
+<h3>Moй профиль</h3>
+<div class="mb-3 text-center">
+
   <hr/>
-  <form>
+  <form class="form-signin">
     <div class="form-group row">
       <label for="staticUsername" class="col-sm-3 col-form-label col-form-label-lg">Nickname</label>
       <div class="col-sm-5">
@@ -66,14 +66,13 @@
       <div class="col-sm-5">
         <input type="text" readonly class="form-control form-control-lg" id="staticCity"
                value="{{profile.city}}">
+        <br/>
+        <button type="button" class="btn btn-lg btn-primary btn-block" data-toggle="modal" data-target="#exampleModal">Изменить</button>
+        <p class="mt-5 mb-3 text-muted">© VicherNick 2020</p>
       </div>
     </div>
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal"
-            data-whatever="@mdo">Open modal for @mdo
-    </button>
   </form>
 </div>
-
 
 <div class="modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
      aria-hidden="true">
@@ -86,8 +85,8 @@
         </button>
       </div>
       <div class="modal-body">
-        <form name="myForm" novalidate ng-submit="submitChangeProfile()">
-               <div class="form-group row">
+        <form name="myForm" novalidate ng-submit="tryToAuth()">
+          <div class="form-group row">
             <label for="profileUsername" class="col-sm-3 col-form-label">Nickname</label>
             <div class="col-sm-8">
               <input type="text" class="form-control" ng-model="newProfile.username"
@@ -122,11 +121,10 @@
           </div>
 
           <div class="form-group row">
-            <label for="profileSurname" class="col-sm-3 col-form-label">Фамилия</label>
+            <label for="profileSurname" value="{{profile.surname}}" class="col-sm-3 col-form-label">Фамилия</label>
             <div class="col-sm-8">
               <input type="text" class="form-control" ng-model="newProfile.surname"
-                     id="profileSurname"
-                     placeholder="{{profile.surname}}">
+                     id="profileSurname">
             </div>
           </div>
 
@@ -143,10 +141,11 @@
           <div class="form-group row">
             <label for="profileSex" class="col-sm-3 col-form-label">Пол</label>
             <div class="col-sm-8">
+              <small id="sexHelp" class="form-text text-muted"><span>{{profile.sex}}</span></small>
               <select class="form-control " type="text" id="profileSex" ng-model="newProfile.sex">
-                <option selected autofocus value="мужской">мужской</option>
+                <option selected value="мужской">мужской</option>
                 <option value="женский">женский</option>
-                          </select>
+              </select>
             </div>
           </div>
 
@@ -166,9 +165,8 @@
             <div class="col-sm-8">
               <small id="emailHelp" class="form-text text-muted">Для изменения профиля введите
                 password</small>
-              <input type="password" required class="form-control" ng-model="newProfile.password"
+              <input type="password" required ng-model="user.password" class="form-control"
                      id="inputPassword">
-
             </div>
           </div>
           <div class="modal-footer">
@@ -177,12 +175,8 @@
             </button>
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Отменить</button>
           </div>
-
         </form>
-
-
       </div>
-
     </div>
   </div>
 </div>

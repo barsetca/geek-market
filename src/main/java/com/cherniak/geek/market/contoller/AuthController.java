@@ -32,7 +32,8 @@ public class AuthController {
 
   @PostMapping("/auth")
   public ResponseEntity<?> createAuthToken(@RequestBody JwtRequest jwtRequest) {
-    try {
+    String password = passwordEncoder.encode(jwtRequest.getPassword());
+       try {
       authenticationManager.authenticate(
           new UsernamePasswordAuthenticationToken(jwtRequest.getUsername(),
               jwtRequest.getPassword()));
