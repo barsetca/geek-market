@@ -20,6 +20,11 @@ angular.module('app').controller('profileController', function ($scope, $http) {
 
     $scope.newProfile.username = $scope.newProfile.username == null
         ? $scope.profile.username : $scope.newProfile.username;
+    if ($scope.newProfile.username != $scope.profile.username){
+      alert('Вы изменили Nickname! После завршения изменения профиля, пожалуйста, '
+          + 'введите повтороно новое имя и действующий пароль на форме входа.'
+          + ' Форма откроется автоматически после обновления профиля. Спасибо.');
+    }
     $scope.newProfile.email = $scope.newProfile.email == null
         ? $scope.profile.email : $scope.newProfile.email;
     $scope.newProfile.phone = $scope.newProfile.phone == null

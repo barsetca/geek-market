@@ -6,13 +6,11 @@ import com.cherniak.geek.market.exception.MarketError;
 import com.cherniak.geek.market.exception.ResourceCreationException;
 import com.cherniak.geek.market.exception.ResourceNotFoundException;
 import com.cherniak.geek.market.jwt.JwtRequest;
-import com.cherniak.geek.market.jwt.JwtResponse;
 import com.cherniak.geek.market.model.Profile;
 import com.cherniak.geek.market.model.User;
 import com.cherniak.geek.market.service.ProfileService;
 import com.cherniak.geek.market.service.UserService;
 import java.security.Principal;
-import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -20,14 +18,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -44,7 +40,8 @@ public class ProfileController {
   @GetMapping
   public ProfileDto getProfile(Principal principal) {
     User user = userService.getByUsername(principal.getName()).orElseThrow(() ->
-        new UsernameNotFoundException(String.format("User by username %s not exists", principal.getName())));
+        new UsernameNotFoundException(
+            String.format("User by username %s not exists", principal.getName())));
     return new ProfileDto(profileService.findByUserId(user.getId()));
   }
 
@@ -61,7 +58,7 @@ public class ProfileController {
 
   @PostMapping
   public ResponseEntity<?> createAuthToken(@RequestBody JwtRequest jwtRequest) {
-      try {
+    try {
       authenticationManager.authenticate(
           new UsernamePasswordAuthenticationToken(jwtRequest.getUsername(),
               jwtRequest.getPassword()));

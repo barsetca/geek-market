@@ -4,7 +4,8 @@
 
 <head>
   <meta charset="utf-8">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+  <link rel="stylesheet"
+        href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 
@@ -16,16 +17,17 @@
 
 <body>
 
-<div class="container">
+<div ng-controller="indexController" class="container">
   <h1>Магазин</h1>
   <a class="btn btn-outline-warning" href="#!/">Главная</a>
   <a class="btn btn-outline-warning" href="#!/reg">Регистрация</a>
   <a class="btn btn-outline-warning" href="#!/auth">Вход</a>
-  <a class="btn btn-outline-warning" href="#!/store">Магазин</a>
-  <a class="btn btn-outline-warning" href="#!/admin">Админка</a>
-  <a class="btn btn-outline-warning" href="#!/cart">Корзина</a>
-  <a class="btn btn-outline-warning" href="#!/order">Заказы</a>
-  <a class="btn btn-outline-warning" href="#!/profile">Профиль</a>
+  <a class="btn btn-outline-warning" ng-if="isUserLoggedIn()" href="#!/store">Магазин</a>
+  <a class="btn btn-outline-warning" ng-if="isUserLoggedIn()" href="#!/admin">Админка</a>
+  <a class="btn btn-outline-warning" ng-if="isUserLoggedIn()" href="#!/cart">Корзина</a>
+  <a class="btn btn-outline-warning" ng-if="isUserLoggedIn()" href="#!/order">Заказы</a>
+  <a class="btn btn-outline-warning" ng-if="isUserLoggedIn()" href="#!/profile">Профиль</a>
+  <button class="btn btn-outline-danger" ng-if="isUserLoggedIn()" ng-click="tryToLogout()">Выйти</button>
 
   <ng-view></ng-view>
 

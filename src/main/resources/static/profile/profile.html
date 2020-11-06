@@ -6,7 +6,7 @@
     <div class="form-group row">
       <label for="staticUsername" class="col-sm-3 col-form-label col-form-label-lg">Nickname</label>
       <div class="col-sm-5">
-        <input type="text" readonly class="form-control form-control-lg" id="staticUsername"
+                <input type="text" readonly class="form-control form-control-lg" id="staticUsername"
                value="{{profile.username}}">
       </div>
     </div>
@@ -87,8 +87,10 @@
       <div class="modal-body">
         <form name="myForm" novalidate ng-submit="tryToAuth()">
           <div class="form-group row">
+
             <label for="profileUsername" class="col-sm-3 col-form-label">Nickname</label>
             <div class="col-sm-8">
+              <small id="nickHelp" class="form-text text-muted"><b>Внимание!</b><br/>Это имя используется при входе в систему.</small>
               <input type="text" class="form-control" ng-model="newProfile.username"
                      id="profileUsername"
                      placeholder="{{profile.username}}">
@@ -163,7 +165,7 @@
             <label for="inputPassword" class="col-sm-3 col-form-label">Password</label>
 
             <div class="col-sm-8">
-              <small id="emailHelp" class="form-text text-muted">Для изменения профиля введите
+              <small id="passwordHelp" class="form-text text-muted">Для изменения профиля введите
                 password</small>
               <input type="password" required ng-model="user.password" class="form-control"
                      id="inputPassword">
