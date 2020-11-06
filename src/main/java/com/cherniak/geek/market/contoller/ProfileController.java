@@ -1,11 +1,9 @@
 package com.cherniak.geek.market.contoller;
 
-import com.cherniak.geek.market.config.JwtTokenUtil;
 import com.cherniak.geek.market.dto.ProfileDto;
 import com.cherniak.geek.market.exception.MarketError;
 import com.cherniak.geek.market.exception.ResourceCreationException;
 import com.cherniak.geek.market.exception.ResourceNotFoundException;
-import com.cherniak.geek.market.jwt.JwtRequest;
 import com.cherniak.geek.market.model.Profile;
 import com.cherniak.geek.market.model.User;
 import com.cherniak.geek.market.service.ProfileService;
@@ -15,10 +13,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,8 +31,7 @@ public class ProfileController {
 
   private final ProfileService profileService;
   private final UserService userService;
-  private final AuthenticationManager authenticationManager;
-  private final JwtTokenUtil jwtTokenUtil;
+  private final BCryptPasswordEncoder passwordEncoder;
 
   @GetMapping
   public ProfileDto getProfile(Principal principal) {
@@ -58,17 +53,17 @@ public class ProfileController {
   }
 
   @PostMapping
-  public ResponseEntity<?> checkPassword(@RequestBody JwtRequest jwtRequest) {
-    try {
-      authenticationManager.authenticate(
-          new UsernamePasswordAuthenticationToken(jwtRequest.getUsername(),
-              jwtRequest.getPassword()));
-    } catch (BadCredentialsException ex) {
-      return new ResponseEntity<>(
-          new MarketError(HttpStatus.BAD_REQUEST.value(), "Incorrect username or password"),
-          HttpStatus.BAD_REQUEST);
+  public ResponseEntity<?> checkPassword(@RequestBody User user) {
+    User user1 = userService.getByUsername(user.getUsername()).orElseThrow(() ->
+        new ResourceNotFoundException(
+            String.format("User by username %s not exists", user.getUsername())));
+    System.out.println(passwordEncoder.matches(user.getPassword(), user1.getPassword()));
+    if (passwordEncoder.matches(user.getPassword(), user1.getPassword())) {
+      return ResponseEntity.ok(user);
     }
-    return ResponseEntity.ok(jwtRequest);
+    return new ResponseEntity<>(
+        new MarketError(HttpStatus.BAD_REQUEST.value(), "Incorrect username or password"),
+        HttpStatus.BAD_REQUEST);
   }
 
   private User getUserAfterCheck(ProfileDto profileDto) {
