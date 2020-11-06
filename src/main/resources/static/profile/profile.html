@@ -91,42 +91,41 @@
             <label for="profileUsername" class="col-sm-3 col-form-label">Nickname</label>
             <div class="col-sm-8">
               <small id="nickHelp" class="form-text text-muted"><b>Внимание!</b><br/>Это имя используется при входе в систему.</small>
-              <input type="text" class="form-control" ng-model="newProfile.username"
+              <input type="text" class="form-control" value="profile.username" ng-model="profile.username"
                      id="profileUsername"
-                     placeholder="{{profile.username}}">
+                     placeholder="nickname">
             </div>
           </div>
 
           <div class="form-group row">
             <label for="profileEmail" class="col-sm-3 col-form-label">Email</label>
             <div class="col-sm-8">
-              <input type="text" class="form-control" ng-model="newProfile.email" id="profileEmail"
-                     placeholder="{{profile.email}}">
+              <input type="text" class="form-control" value="profile.email" ng-model="profile.email" id="profileEmail"
+                     placeholder="email">
             </div>
           </div>
 
           <div class="form-group row">
             <label for="profilePhone" class="col-sm-3 col-form-label">Телефон</label>
             <div class="col-sm-8">
-              <input type="text" class="form-control" ng-model="newProfile.phone" id="profilePhone"
-                     placeholder="{{profile.phone}}">
+              <input type="text" class="form-control" value="profile.phone" ng-model="profile.phone" id="profilePhone"
+                     placeholder="телефон">
             </div>
           </div>
 
           <div class="form-group row">
             <label for="profileFirstname" class="col-sm-3 col-form-label">Имя</label>
             <div class="col-sm-8">
-              <input type="text" class="form-control" ng-model="newProfile.firstname"
-                     id="profileFirstname"
-                     placeholder="{{profile.firstname}}">
+              <input type="text" class="form-control" value="profile.firstname" ng-model="profile.firstname"
+                     id="profileFirstname" placeholder="имя">
             </div>
           </div>
 
           <div class="form-group row">
-            <label for="profileSurname" value="{{profile.surname}}" class="col-sm-3 col-form-label">Фамилия</label>
+            <label for="profileSurname" class="col-sm-3 col-form-label">Фамилия</label>
             <div class="col-sm-8">
-              <input type="text" class="form-control" ng-model="newProfile.surname"
-                     id="profileSurname">
+              <input type="text" class="form-control" value="profile.surname" ng-model="profile.surname"
+                     id="profileSurname" placeholder="фамилия">
             </div>
           </div>
 
@@ -134,36 +133,34 @@
             <label for="profileBirthday" class="col-sm-3 col-form-label">Дата
               рождения</label>
             <div class="col-sm-8">
-              <input type="datetime-local" class="form-control" ng-model="newProfile.birthday"
-                     id="profileBirthday"
-                     placeholder="{{profile.birthday}}">
+              <small id="birthdayHelp" class="form-text text-muted"><span>{{profile.birthday}}</span></small>
+              <input type="datetime-local" class="form-control" value="profile.birthday" ng-model="profile.birthday"
+                     id="profileBirthday" placeholder="{{profile.birthday}}">
             </div>
           </div>
 
           <div class="form-group row">
             <label for="profileSex" class="col-sm-3 col-form-label">Пол</label>
             <div class="col-sm-8">
-              <small id="sexHelp" class="form-text text-muted"><span>{{profile.sex}}</span></small>
-              <select class="form-control " type="text" id="profileSex" ng-model="newProfile.sex">
+              <select class="form-control " type="text" id="profileSex" ng-model="profile.sex">
+                <option selected value="profile.sex"></option>
                 <option selected value="мужской">мужской</option>
                 <option value="женский">женский</option>
               </select>
             </div>
           </div>
 
-
           <div class="form-group row">
             <label for="profileCity" class="col-sm-3 col-form-label">Город проживания</label>
             <div class="col-sm-8">
-              <input type="text" class="form-control" ng-model="newProfile.city" id="profileCity"
-                     placeholder="{{profile.city}}">
+              <input type="text" class="form-control" value="profile.city" ng-model="profile.city"
+                     id="profileCity" placeholder="город проживания">
             </div>
           </div>
 
 
-          <div class="form-group row">
+           <div class="form-group row">
             <label for="inputPassword" class="col-sm-3 col-form-label">Password</label>
-
             <div class="col-sm-8">
               <small id="passwordHelp" class="form-text text-muted">Для изменения профиля введите
                 password</small>
