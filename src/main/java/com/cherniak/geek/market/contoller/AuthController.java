@@ -16,6 +16,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -48,7 +49,7 @@ public class AuthController {
   }
 
   @PostMapping("/reg")
-  public ResponseEntity<?> registration(@RequestBody User user) throws RoleNotFoundException {
+  public ResponseEntity<?> registration(@RequestBody @Validated User user) throws RoleNotFoundException {
 
     if (userService.existsByUsername(user.getUsername())) {
       throw new ResourceCreationException(

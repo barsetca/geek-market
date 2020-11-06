@@ -43,7 +43,7 @@ public class Profile {
   @PastOrPresent
   private LocalDate birthday;
 
-  @Size(min = 2)
+  @Size(min = 1)
   @Column(name = "sex")
   private String sex;
 

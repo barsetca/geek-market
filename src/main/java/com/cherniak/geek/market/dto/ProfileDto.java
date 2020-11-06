@@ -2,6 +2,10 @@ package com.cherniak.geek.market.dto;
 
 import com.cherniak.geek.market.model.Profile;
 import java.time.LocalDate;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.PastOrPresent;
+import javax.validation.constraints.Size;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,14 +15,22 @@ import lombok.NoArgsConstructor;
 public class ProfileDto {
 
   private Long id;
-
+  @Size(min = 2)
   private String firstname;
+  @Size(min = 2)
   private String surname;
+  @Size(min = 3)
   private String phone;
+  @PastOrPresent
   private LocalDate birthday;
+  @Size(min = 1)
   private String sex;
+  @Size(min = 2)
   private String city;
+  @Email
   private String email;
+  @NotBlank
+  @Size(min = 2)
   private String username;
   private Long userId;
 

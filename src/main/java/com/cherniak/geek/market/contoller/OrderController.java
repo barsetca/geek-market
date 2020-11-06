@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -43,7 +44,7 @@ public class OrderController {
   }
 
   @PostMapping
-  public void save(Principal principal, @RequestBody Order order) {
+  public void save(Principal principal, @RequestBody @Validated Order order) {
     if (order.getReceiver() == null || order.getPhone() == null || order.getAddress() == null) {
       throw new ResourceCreationException("Недостаточно данных для создания заказа");
     }

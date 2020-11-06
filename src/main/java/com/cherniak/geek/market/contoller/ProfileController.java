@@ -19,6 +19,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -46,7 +47,7 @@ public class ProfileController {
   }
 
   @PutMapping(consumes = "application/json", produces = "application/json")
-  public void updateProfile(@RequestBody ProfileDto profileDto) {
+  public void updateProfile(@RequestBody @Validated ProfileDto profileDto) {
     System.out.println(profileDto);
 
     User user = getUserAfterCheck(profileDto);
@@ -57,7 +58,7 @@ public class ProfileController {
   }
 
   @PostMapping
-  public ResponseEntity<?> createAuthToken(@RequestBody JwtRequest jwtRequest) {
+  public ResponseEntity<?> checkPassword(@RequestBody JwtRequest jwtRequest) {
     try {
       authenticationManager.authenticate(
           new UsernamePasswordAuthenticationToken(jwtRequest.getUsername(),
@@ -89,9 +90,6 @@ public class ProfileController {
       }
       user.setEmail(email);
     }
-
     return user;
   }
-
-
 }
