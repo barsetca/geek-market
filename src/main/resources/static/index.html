@@ -12,19 +12,22 @@
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular-route.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/ngStorage/0.3.11/ngStorage.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 </head>
 
 <body>
 
-<div class="container">
+<div ng-controller="indexController" class="container">
   <h1>Магазин</h1>
   <a class="btn btn-outline-warning" href="#!/">Главная</a>
   <a class="btn btn-outline-warning" href="#!/reg">Регистрация</a>
   <a class="btn btn-outline-warning" href="#!/auth">Вход</a>
-  <a class="btn btn-outline-warning" href="#!/store">Магазин</a>
-  <a class="btn btn-outline-warning" href="#!/admin">Админка</a>
-  <a class="btn btn-outline-warning" href="#!/cart">Корзина</a>
-  <a class="btn btn-outline-warning" href="#!/order">Заказы</a>
+  <a class="btn btn-outline-warning" ng-if="isUserLoggedIn()" href="#!/store">Магазин</a>
+  <a class="btn btn-outline-warning" ng-if="isUserLoggedIn()" href="#!/admin">Админка</a>
+  <a class="btn btn-outline-warning" ng-if="isUserLoggedIn()" href="#!/cart">Корзина</a>
+  <a class="btn btn-outline-warning" ng-if="isUserLoggedIn()" href="#!/order">Заказы</a>
+  <a class="btn btn-outline-warning" ng-if="isUserLoggedIn()" href="#!/profile">Профиль</a>
+  <button class="btn btn-outline-danger" ng-if="isUserLoggedIn()" ng-click="tryToLogout()">Выйти</button>
 
   <ng-view></ng-view>
 
@@ -35,6 +38,7 @@
   <script src="order/order.js"></script>
   <script src="admin/admin.js"></script>
   <script src="cart/cart.js"></script>
+  <script src="profile/profile.js"></script>
 </div>
 </body>
 </html>

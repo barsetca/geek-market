@@ -19,6 +19,10 @@
       templateUrl: 'registration/registration.html',
       controller: 'registrationController'
     })
+    .when('/profile', {
+      templateUrl: 'profile/profile.html',
+      controller: 'profileController'
+    })
     .when('/store', {
       templateUrl: 'store/store.html',
       controller: 'storeController'
@@ -67,3 +71,31 @@
   }
 
 })();
+
+angular.module('app').controller('indexController', function ($scope, $http, $localStorage){
+  const contextPath = 'http://localhost:8189/market';
+
+$scope.isUserLoggedIn = function (){
+  if($localStorage.currentUser){
+    return true;
+  } else {
+    return false
+  }
+};
+
+  $scope.tryToLogout = function () {
+    console.log('tryToLogout')
+    $scope.clearUser();
+    if ($scope.user.username) {
+      $scope.user.username = null;
+    }
+    if ($scope.user.password) {
+      $scope.user.password = null;
+    }
+  };
+
+  $scope.clearUser = function () {
+    delete $localStorage.currentUser;
+    $http.defaults.headers.common.Authorization = '';
+  };
+});
