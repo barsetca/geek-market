@@ -27,7 +27,7 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="products" type="{http://www.geekbrains.com/cherniak/geek/market/ws}productWs" maxOccurs="unbounded"/&gt;
+ *         &lt;element name="orders" type="{http://www.geekbrains.com/cherniak/geek/market/ws}orderWs" maxOccurs="unbounded"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -38,41 +38,41 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "products"
+    "orders"
 })
-@XmlRootElement(name = "getProductsResponse")
-public class GetProductsResponse {
+@XmlRootElement(name = "getOrdersResponse")
+public class GetOrdersResponse {
 
     @XmlElement(required = true)
-    protected List<ProductWs> products;
+    protected List<OrderWs> orders;
 
     /**
-     * Gets the value of the products property.
+     * Gets the value of the orders property.
      * 
      * <p>
      * This accessor method returns a reference to the live list,
      * not a snapshot. Therefore any modification you make to the
      * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the products property.
+     * This is why there is not a <CODE>set</CODE> method for the orders property.
      * 
      * <p>
      * For example, to add a new item, do as follows:
      * <pre>
-     *    getProducts().add(newItem);
+     *    getOrders().add(newItem);
      * </pre>
      * 
      * 
      * <p>
      * Objects of the following type(s) are allowed in the list
-     * {@link ProductWs }
+     * {@link OrderWs }
      * 
      * 
      */
-    public List<ProductWs> getProducts() {
-        if (products == null) {
-            products = new ArrayList<ProductWs>();
+    public List<OrderWs> getOrders() {
+        if (orders == null) {
+            orders = new ArrayList<OrderWs>();
         }
-        return this.products;
+        return this.orders;
     }
 
 }

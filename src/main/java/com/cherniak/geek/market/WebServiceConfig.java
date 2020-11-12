@@ -23,10 +23,10 @@ public class WebServiceConfig extends WsConfigurerAdapter {
         return new ServletRegistrationBean(servlet, "/ws/*");
     }
 
-    @Bean(name = "products")
+    @Bean(name = "market")
     public DefaultWsdl11Definition defaultWsdl11Definition(XsdSchema productsSchema) {
         DefaultWsdl11Definition wsdl11Definition = new DefaultWsdl11Definition();
-        wsdl11Definition.setPortTypeName("ProductsPort");
+        wsdl11Definition.setPortTypeName("MarketPort");
         wsdl11Definition.setLocationUri("/ws");
         wsdl11Definition.setTargetNamespace("http://www.geekbrains.com/cherniak/geek/market/ws");
         wsdl11Definition.setSchema(productsSchema);
@@ -34,7 +34,11 @@ public class WebServiceConfig extends WsConfigurerAdapter {
     }
 
     @Bean
-    public XsdSchema countriesSchema() {
+    public XsdSchema productsSchema() {
         return new SimpleXsdSchema(new ClassPathResource("products.xsd"));
+    }
+    @Bean
+    public XsdSchema ordersSchema() {
+        return new SimpleXsdSchema(new ClassPathResource("orders.xsd"));
     }
 }
