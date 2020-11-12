@@ -1,11 +1,11 @@
 package com.cherniak.geek.market;
 
+import com.cherniak.geek.market.model.Product;
 import com.cherniak.geek.market.service.ProductService;
 import com.cherniak.geek.market.ws.GetProductsResponse;
-import com.cherniak.geek.market.ws.ProductAdapter;
+import com.cherniak.geek.market.ws.ProductMapper;
 import com.cherniak.geek.market.ws.ProductWs;
 import java.util.List;
-import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
@@ -27,11 +27,13 @@ public class ProductEndpoint {
   @ResponsePayload
   public GetProductsResponse getProducts() {
     GetProductsResponse productsResponse = new GetProductsResponse();
-    List<ProductWs> products = productService.findAll().stream()
-        .map(ProductAdapter::requestProduct)
-        .collect(Collectors.toList());
+    List<Product> productList = productService.findAll();
+    List<ProductWs> products = ProductMapper.MAPPER.fromProductList(productList);
+//        List<ProductWs> products = productService.findAll().stream()
+//        .map(ProductAdapter::requestProduct)
+//        .collect(Collectors.toList());
 
-    productsResponse.setProducts(products);
+    productsResponse.getProducts().addAll(products);
     return productsResponse;
   }
 

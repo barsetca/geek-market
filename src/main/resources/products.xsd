@@ -6,6 +6,7 @@
   <xs:element name="getProductsRequest">
     <xs:complexType>
       <xs:sequence>
+<!--        <xs:element name="title" type="xs:string"/>-->
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -21,8 +22,8 @@
   <xs:complexType name="productWs">
     <xs:sequence>
       <xs:element name="productId" type="xs:long"/>
-      <xs:element name="productTitle" type="xs:string"/>
-      <xs:element name="productCost" type="xs:int"/>
+      <xs:element name="title" type="xs:string"/>
+      <xs:element name="cost" type="xs:int"/>
 <!--      <xs:element name="categoryTitle" type="tns:category"/>-->
       <xs:element name="categoryId" type="xs:long"/>
       <xs:element name="categoryTitle" type="xs:string"/>

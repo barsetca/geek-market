@@ -10,12 +10,10 @@ public class ProductAdapter {
   public static ProductWs requestProduct(Product product) {
     ProductWs wsProduct = new ProductWs();
     wsProduct.setProductId(product.getId());
-    wsProduct.setProductTitle(product.getTitle());
-    wsProduct.setProductCost(product.getCost());
+    wsProduct.setTitle(product.getTitle());
+    wsProduct.setCost(product.getCost());
     wsProduct.setCategoryId(product.getCategory().getId());
     wsProduct.setCategoryTitle(product.getCategory().getTitle());
     return wsProduct;
   }
-
-
 }
