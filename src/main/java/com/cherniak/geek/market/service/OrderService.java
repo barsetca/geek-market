@@ -33,6 +33,11 @@ public class OrderService {
         return orderRepository.findAllByUserId(userId, Sort.by(Sort.Order.desc("id")));
     }
 
+    public List<Order> findAllByUsername(String username) {
+        return orderRepository.findAllByUsername(username);
+    }
+
+
     @Transactional
     public Order save(Order order) {
         return orderRepository.save(order);
