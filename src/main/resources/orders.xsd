@@ -1,7 +1,7 @@
 <xs:schema
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
-  xmlns:tns="http://www.geekbrains.com/cherniak/geek/market/ws"
-  targetNamespace="http://www.geekbrains.com/cherniak/geek/market/ws" elementFormDefault="qualified">
+  xmlns:tns="http://www.geekbrains.com/cherniak/geek/market/ws/orders"
+  targetNamespace="http://www.geekbrains.com/cherniak/geek/market/ws/orders" elementFormDefault="qualified">
 
   <xs:element name="getOrdersRequest">
     <xs:complexType>

@@ -2,14 +2,10 @@ package com.cherniak.geek.market;
 
 import com.cherniak.geek.market.model.Order;
 import com.cherniak.geek.market.service.OrderService;
-import com.cherniak.geek.market.service.ProductService;
 import com.cherniak.geek.market.ws.GetOrdersRequest;
 import com.cherniak.geek.market.ws.GetOrdersResponse;
-import com.cherniak.geek.market.ws.GetProductsResponse;
 import com.cherniak.geek.market.ws.OrderMapper;
 import com.cherniak.geek.market.ws.OrderWs;
-import com.cherniak.geek.market.ws.ProductMapper;
-import com.cherniak.geek.market.ws.ProductWs;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
@@ -20,7 +16,7 @@ import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 @Endpoint
 public class OrderEndpoint {
 
-  public static final String NAMESPACE_URI = "http://www.geekbrains.com/cherniak/geek/market/ws";
+  public static final String NAMESPACE_URI = "http://www.geekbrains.com/cherniak/geek/market/ws/orders";
 
   private OrderService orderService;
 
