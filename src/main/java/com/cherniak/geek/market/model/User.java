@@ -60,13 +60,4 @@ public class User {
   @Cascade(org.hibernate.annotations.CascadeType.ALL)
   private Profile profile;
 
-  @Override
-  public String toString() {
-    return "User{" +
-        "id=" + id +
-        ", username='" + username + '\'' +
-        ", password='" + password + '\'' +
-        ", email='" + email + '\'' +
-        '}';
-  }
 }

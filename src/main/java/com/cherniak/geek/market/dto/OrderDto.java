@@ -29,4 +29,14 @@ public class OrderDto {
     this.items = order.getItems().stream().map(OrderItemDto::new).collect(
         Collectors.toList());
   }
+
+  public OrderDto(Long orderId, LocalDate date, int cost, String receiver, String phone,
+      String address) {
+    this.orderId = orderId;
+    this.date = date;
+    this.cost = cost;
+    this.receiver = receiver;
+    this.phone = phone;
+    this.address = address;
+  }
 }
