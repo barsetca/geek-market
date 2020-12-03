@@ -3,7 +3,10 @@ package com.cherniak.geek.market.service;
 import com.cherniak.geek.market.model.Role;
 import com.cherniak.geek.market.model.User;
 import com.cherniak.geek.market.repository.UserRepository;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import javax.management.relation.RoleNotFoundException;
@@ -56,7 +59,7 @@ class UserServiceTest {
         .when(repository).findByUsername("username");
     User userActual = service.getByUsername(USER_NAME).get();
     checkUser(userActual);
-    verifyMockitoUserName();
+    verifyMockitoUserName(1);
   }
 
   @Test
@@ -77,6 +80,10 @@ class UserServiceTest {
 
   @Test
   void existsByEmail() {
+    Mockito.doReturn(Boolean.valueOf(true))
+        .when(repository).existsByEmail(EMAIL);
+    Assertions.assertTrue(service.existsByEmail(EMAIL));
+
   }
 
   @Test
@@ -89,11 +96,14 @@ class UserServiceTest {
 
   @Test
   void findAll() {
+    List<User> userList = new ArrayList<>(Arrays.asList(user));
+    Mockito.doReturn(userList)
+        .when(repository).findAll();
+    Assertions.assertEquals(1, service.findAll().size());
   }
 
   @Test
   void create() throws RoleNotFoundException {
-
     User userActual = service.create(user);
     checkUser(userActual);
     Assertions.assertEquals("ROLE_USER",
@@ -112,7 +122,7 @@ class UserServiceTest {
           Assertions.assertEquals(USER_NAME, service.loadUserByUsername(USER_NAME).getUsername());
         });
 
-    verifyMockitoUserName();
+    verifyMockitoUserName(2);
     Mockito.verify(repository, Mockito.times(1))
         .findByUsername(ArgumentMatchers.eq("user"));
 
@@ -126,7 +136,9 @@ class UserServiceTest {
         .save(ArgumentMatchers.eq(user));
   }
 
-  private void verifyMockitoUserName() {
+  private void verifyMockitoUserName(int countString) {
+    Mockito.verify(repository, Mockito.times(countString))
+        .findByUsername(ArgumentMatchers.anyString());
     Mockito.verify(repository, Mockito.times(1))
         .findByUsername(ArgumentMatchers.eq(USER_NAME));
   }

@@ -1,6 +1,7 @@
 package com.cherniak.geek.market.contoller;
 
 import com.cherniak.geek.market.dto.CategoryDto;
+import com.cherniak.geek.market.dto.CategoryListContainer;
 import com.cherniak.geek.market.service.CategoryService;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,5 +20,13 @@ public class CategoryController {
   @GetMapping(produces = "application/json")
   public List<CategoryDto> findAll() {
     return categoryService.findAll().stream().map(CategoryDto::new).collect(Collectors.toList());
+  }
+
+  @GetMapping("/list")
+  public CategoryListContainer findObjectListContainer() {
+    List<CategoryDto> categoryDtos = categoryService.findAll().stream().map(CategoryDto::new)
+        .collect(Collectors.toList());
+    CategoryListContainer list = new CategoryListContainer(categoryDtos);
+    return list;
   }
 }
