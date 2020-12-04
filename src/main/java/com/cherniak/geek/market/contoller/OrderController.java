@@ -36,7 +36,6 @@ public class OrderController {
     String username = principal.getName();
     User user = userService.getByUsername(username).orElseThrow(() ->
         new UsernameNotFoundException(String.format("User by username %s not exists", username)));
-    System.out.println("findAllByUserId" + user);
     List<OrderDto> orderDtos = orderService.findAllByUserId(user.getId()).stream()
         .map(OrderDto::new).collect(
             Collectors.toList());
