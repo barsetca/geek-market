@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
@@ -20,6 +22,7 @@ import org.springframework.web.context.WebApplicationContext;
 @Data
 public class Cart {
 
+  @Autowired
   private ProductService productService;
   private List<OrderItem> items;
   private int price;

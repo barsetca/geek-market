@@ -25,7 +25,7 @@ class CategoryRepositoryTest {
     this.repository = repository;
   }
 
-  private List<CategoryDto> categoryDtoList = new ArrayList<>();
+  private final List<CategoryDto> categoryDtoList = new ArrayList<>();
 
   @BeforeEach
   void setUp() {

@@ -18,9 +18,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+@ActiveProfiles("test")
 @SpringBootTest
 @AutoConfigureMockMvc
 class CategoryControllerTest {
@@ -31,15 +33,14 @@ class CategoryControllerTest {
   @MockBean
   private CategoryService service;
 
-  //  private List<CategoryDto> categoryDtoList = new ArrayList<>();
-  private List<Category> categoryDtoList = new ArrayList<>();
+   private List<Category> categoryList = new ArrayList<>();
 
   @BeforeEach
   void setUp() {
-    categoryDtoList.add(new Category(1L, "Category1"));
-    categoryDtoList.add(new Category(2L, "Category2"));
-    categoryDtoList.add(new Category(3L, "Category3"));
-    Mockito.doReturn(categoryDtoList)
+    categoryList.add(new Category(1L, "Category1"));
+    categoryList.add(new Category(2L, "Category2"));
+    categoryList.add(new Category(3L, "Category3"));
+    Mockito.doReturn(categoryList)
         .when(service).findAll();
   }
 
@@ -52,8 +53,8 @@ class CategoryControllerTest {
         .andExpect(status().isOk())
         .andExpect(jsonPath("$").isArray())
         .andExpect(jsonPath("$", hasSize(3)))
-        .andExpect(jsonPath("$[0].title", is(categoryDtoList.get(0).getTitle())))
-        .andExpect(jsonPath("$[1].title", is(categoryDtoList.get(1).getTitle())))
-        .andExpect(jsonPath("$[2].title", is(categoryDtoList.get(2).getTitle())));
+        .andExpect(jsonPath("$[0].title", is(categoryList.get(0).getTitle())))
+        .andExpect(jsonPath("$[1].title", is(categoryList.get(1).getTitle())))
+        .andExpect(jsonPath("$[2].title", is(categoryList.get(2).getTitle())));
   }
 }

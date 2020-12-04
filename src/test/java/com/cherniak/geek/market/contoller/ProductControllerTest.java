@@ -33,10 +33,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+@ActiveProfiles("test")
 @SpringBootTest
 @AutoConfigureMockMvc
 class ProductControllerTest {
@@ -53,14 +55,18 @@ class ProductControllerTest {
   private Category category;
   private Product product;
 
+  private static final Long ID = 4L;
+  private static final String CATEGORY_TITLE = "Category4";
+  private static final String PRODUCT_TITLE = "Product4";
+
   @BeforeEach
   void setUp() {
     category = new Category();
-    category.setId(1L);
-    category.setTitle("Category1");
+    category.setId(ID);
+    category.setTitle(CATEGORY_TITLE);
     product = new Product();
-    product.setId(4L);
-    product.setTitle("Product4");
+    product.setId(ID);
+    product.setTitle(PRODUCT_TITLE);
     product.setCost(100);
     product.setCategory(category);
   }
@@ -97,30 +103,30 @@ class ProductControllerTest {
   void getById() throws Exception {
 
     Mockito.doReturn(Optional.of(product))
-        .when(service).findById(4L);
+        .when(service).findById(ID);
 
     mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/products/4")
         .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.title", is(product.getTitle())))
         .andExpect(jsonPath("$.cost", is(product.getCost())))
-        .andExpect(jsonPath("$.category.title", is(product.getCategory().getTitle())));
+        .andExpect(jsonPath("$.categoryTitle", is(product.getCategory().getTitle())));
   }
 
   @Test
   @WithMockUser(username = "admin", authorities = "ADMIN")
   void create() throws Exception {
     Mockito.doReturn(Boolean.valueOf(false))
-        .when(service).existsById(4L);
+        .when(service).existsById(ID);
     Mockito.doReturn(Boolean.valueOf(false))
-        .when(service).existsByTitle("Category1");
+        .when(service).existsByTitle(PRODUCT_TITLE);
     Mockito.doReturn(Optional.of(category))
-        .when(categoryService).findByTitle("Category1");
+        .when(categoryService).findByTitle(CATEGORY_TITLE);
     Mockito.doReturn(product)
         .when(service).save(product);
     Map<String, String> param = new HashMap<>();
-    param.put("title", "Product1");
-    param.put("categoryTitle", "Category1");
+    param.put("title", PRODUCT_TITLE);
+    param.put("categoryTitle", CATEGORY_TITLE);
     param.put("cost", "100");
     StringWriter writer = new StringWriter();
     ObjectMapper mapper = new ObjectMapper();

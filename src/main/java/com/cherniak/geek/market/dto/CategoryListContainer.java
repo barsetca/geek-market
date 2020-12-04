@@ -2,10 +2,11 @@ package com.cherniak.geek.market.dto;
 
 import java.util.List;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 
 @NoArgsConstructor
-
+@ToString
 public class CategoryListContainer {
 
   private List<CategoryDto> categoryDtos;
