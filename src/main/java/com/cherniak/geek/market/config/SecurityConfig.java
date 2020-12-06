@@ -22,19 +22,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   protected void configure(HttpSecurity http) throws Exception {
 
     http.authorizeRequests()
+        .antMatchers("/api/v1/admin/**").hasAnyRole("ADMIN")
         .antMatchers("/api/v1/**").authenticated()
-    .antMatchers("/h2-console/**").permitAll()
+        .antMatchers("/h2-console/**").permitAll()
         .anyRequest().permitAll()
         .and()
         .csrf().disable()
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
-
-
-//        .antMatchers("/orders/**").authenticated()
-//        .antMatchers("/admin/**").hasAnyRole("ADMIN")
-//        .antMatchers("/director/").hasAnyAuthority("EXCLUSIVE")
-        http.headers().frameOptions().disable();
+    http.headers().frameOptions().disable();
   }
 
   @Bean
