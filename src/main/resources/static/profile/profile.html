@@ -6,7 +6,7 @@
     <div class="form-group row">
       <label for="staticUsername" class="col-sm-3 col-form-label col-form-label-lg">Nickname</label>
       <div class="col-sm-5">
-                <input type="text" readonly class="form-control form-control-lg" id="staticUsername"
+        <input type="text" readonly class="form-control form-control-lg" id="staticUsername"
                value="{{profile.username}}">
       </div>
     </div>
@@ -67,7 +67,9 @@
         <input type="text" readonly class="form-control form-control-lg" id="staticCity"
                value="{{profile.city}}">
         <br/>
-        <button type="button" class="btn btn-lg btn-primary btn-block" data-toggle="modal" data-target="#exampleModal">Изменить</button>
+        <button type="button" class="btn btn-lg btn-primary btn-block" data-toggle="modal"
+                data-target="#exampleModal">Изменить
+        </button>
         <p class="mt-5 mb-3 text-muted">© VicherNick 2020</p>
       </div>
     </div>
@@ -90,8 +92,10 @@
 
             <label for="profileUsername" class="col-sm-3 col-form-label">Nickname</label>
             <div class="col-sm-8">
-              <small id="nickHelp" class="form-text text-muted"><b>Внимание!</b><br/>Это имя используется при входе в систему.</small>
-              <input type="text" class="form-control" value="profile.username" ng-model="profile.username"
+              <small id="nickHelp" class="form-text text-muted"><b>Внимание!</b><br/>Это имя
+                используется при входе в систему.</small>
+              <input type="text" class="form-control" value="profile.username"
+                     ng-model="profile.username"
                      id="profileUsername"
                      placeholder="nickname">
             </div>
@@ -100,7 +104,8 @@
           <div class="form-group row">
             <label for="profileEmail" class="col-sm-3 col-form-label">Email</label>
             <div class="col-sm-8">
-              <input type="text" class="form-control" value="profile.email" ng-model="profile.email" id="profileEmail"
+              <input type="text" class="form-control" value="profile.email" ng-model="profile.email"
+                     id="profileEmail"
                      placeholder="email">
             </div>
           </div>
@@ -108,7 +113,8 @@
           <div class="form-group row">
             <label for="profilePhone" class="col-sm-3 col-form-label">Телефон</label>
             <div class="col-sm-8">
-              <input type="text" class="form-control" value="profile.phone" ng-model="profile.phone" id="profilePhone"
+              <input type="text" class="form-control" value="profile.phone" ng-model="profile.phone"
+                     id="profilePhone"
                      placeholder="телефон">
             </div>
           </div>
@@ -116,7 +122,8 @@
           <div class="form-group row">
             <label for="profileFirstname" class="col-sm-3 col-form-label">Имя</label>
             <div class="col-sm-8">
-              <input type="text" class="form-control" value="profile.firstname" ng-model="profile.firstname"
+              <input type="text" class="form-control" value="profile.firstname"
+                     ng-model="profile.firstname"
                      id="profileFirstname" placeholder="имя">
             </div>
           </div>
@@ -124,7 +131,8 @@
           <div class="form-group row">
             <label for="profileSurname" class="col-sm-3 col-form-label">Фамилия</label>
             <div class="col-sm-8">
-              <input type="text" class="form-control" value="profile.surname" ng-model="profile.surname"
+              <input type="text" class="form-control" value="profile.surname"
+                     ng-model="profile.surname"
                      id="profileSurname" placeholder="фамилия">
             </div>
           </div>
@@ -133,8 +141,10 @@
             <label for="profileBirthday" class="col-sm-3 col-form-label">Дата
               рождения</label>
             <div class="col-sm-8">
-              <small id="birthdayHelp" class="form-text text-muted"><span>{{profile.birthday}}</span></small>
-              <input type="datetime-local" class="form-control" value="profile.birthday" ng-model="profile.birthday"
+              <small id="birthdayHelp"
+                     class="form-text text-muted"><span>{{profile.birthday}}</span></small>
+              <input type="datetime-local" class="form-control" value="profile.birthday"
+                     ng-model="profile.birthday"
                      id="profileBirthday" placeholder="{{profile.birthday}}">
             </div>
           </div>
@@ -159,7 +169,7 @@
           </div>
 
 
-           <div class="form-group row">
+          <div class="form-group row">
             <label for="inputPassword" class="col-sm-3 col-form-label">Password</label>
             <div class="col-sm-8">
               <small id="passwordHelp" class="form-text text-muted">Для изменения профиля введите

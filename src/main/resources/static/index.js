@@ -86,7 +86,6 @@ angular.module('app').controller('indexController',
       };
 
       $scope.isAdmin = function () {
-
         if ($localStorage.currentUser) {
           var arr = $localStorage.currentUser.roles;
           for (var i = 0; i < arr.length; i++) {
@@ -104,12 +103,17 @@ angular.module('app').controller('indexController',
         console.log('tryToLogout')
         console.log($http.defaults.headers.common.Authorization)
         $scope.clearUser();
-        if ($scope.user.username) {
-          $scope.user.username = null;
+        if ($localStorage.currentUser) {
+          if ($scope.user.username) {
+            $scope.user.username = null;
+          }
+          if ($scope.user.password) {
+            $scope.user.password = null;
+          }
         }
-        if ($scope.user.password) {
-          $scope.user.password = null;
-        }
+
+        console.log(window.location)
+        window.location.href = contextPath + '/#!/auth';
       };
 
       $scope.clearUser = function () {

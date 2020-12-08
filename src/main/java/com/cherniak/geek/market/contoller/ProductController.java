@@ -1,9 +1,9 @@
 package com.cherniak.geek.market.contoller;
 
+import com.cherniak.geek.market.dto.PageDto;
 import com.cherniak.geek.market.dto.ProductDto;
 import com.cherniak.geek.market.exception.ResourceCreationException;
 import com.cherniak.geek.market.exception.ResourceNotFoundException;
-import com.cherniak.geek.market.model.Category;
 import com.cherniak.geek.market.model.Product;
 import com.cherniak.geek.market.service.CategoryService;
 import com.cherniak.geek.market.service.ProductService;
@@ -21,7 +21,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -56,6 +55,9 @@ public class ProductController {
         .collect(Collectors.toList());
     Pageable pageable = PageRequest.of(page - 1, 5);
 
+    Page<ProductDto> dtoPage = new PageImpl<>(productDtos, pageable, products.getTotalElements());
+
+    PageDto pageDto = new PageDto(dtoPage);
     return new PageImpl<>(productDtos, pageable, products.getTotalElements());
   }
 
@@ -64,42 +66,6 @@ public class ProductController {
     Product product = productService.findById(id).orElseThrow(
         () -> new ResourceNotFoundException(String.format("Product with id = %d not exists", id)));
     ProductDto productDto = new ProductDto(product);
-    return productDto;
-  }
-
-  @PostMapping(consumes = "application/json", produces = "application/json")
-  public ProductDto create(@RequestBody @Validated ProductDto productDto, BindingResult result) {
-    if (result.hasErrors()) {
-      StringBuilder sb = new StringBuilder();
-      result.getFieldErrors().forEach(
-          fe -> {
-            String msg = fe.getDefaultMessage();
-            if (msg != null) {
-              if (!msg.startsWith(fe.getField())) {
-                msg = fe.getField() + " - " + msg;
-              }
-              sb.append(" Поле: ").append(msg);
-            }
-          });
-      throw new ResourceCreationException(sb.toString());
-    }
-    Long id = productDto.getId();
-    if (id != null && productService.existsById(id)) {
-      throw new ResourceCreationException(String.format("Product with id = %d already exists", id));
-    }
-    String title = productDto.getTitle();
-    if (productService.existsByTitle(title)) {
-      throw new ResourceCreationException(
-          String.format("Product with title %s already exists", title));
-    }
-    String categoryTitle = productDto.getCategoryTitle();
-    Category category = categoryService.findByTitle(categoryTitle).orElseThrow(() ->
-        new ResourceCreationException(
-            String.format("Category with title %s not exists", categoryTitle)));
-    Product product = ProductDto.fromDto(productDto, category);
-    productService.save(product);
-    productDto.setId(product.getId());
-
     return productDto;
   }
 
