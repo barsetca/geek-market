@@ -1,23 +1,31 @@
 <div>
-  <h3>Добавить новый товар</h3>
-  <!--    <form novalidate ng-submit="submitCreateNewProduct()">-->
-  <!--        <div class="form-group col-md-6">-->
-  <!--            <label for="exampleFormControlSelect1">Категория</label>-->
-  <!--            <select class="form-control" type="text" id="exampleFormControlSelect1" ng-model="newProduct.categoryTitle">-->
-  <!--                <option ng-repeat="c in categories">{{c.title}}</option>-->
-  <!--            </select>-->
-  <!--        </div>-->
-  <!--        <div class="form-group col-md-6">-->
-  <!--            <label for="elementTitle">Название</label>-->
-  <!--            <input class="form-control" type="text" ng-model="newProduct.title" id="elementTitle">-->
-  <!--        </div>-->
-  <!--        <div class="form-group col-md-6">-->
-  <!--            <label for="elementPrice">Цена</label>-->
-  <!--            <input class="form-control" type="number" ng-model="newProduct.cost" id="elementPrice">-->
-  <!--        </div>-->
-  <!--        <div>-->
-  <!--            <button class="btn btn-success" type="submit">Сохранить</button>-->
-  <!--        </div>-->
-  <!--    </form>-->
+  <h3>Пользователи</h3>
+  <table class="table table-hover" cellpadding="0" cellspacing="0">
+    <thead class="thead-light">
+    <tr>
+      <th>Username</th>
+      <th>email</th>
+      <th>enabled</th>
+      <th ng-if="u.enabled"></th>
+      <th ng-if="!u.enabled"></th>
+    </tr>
+    </thead>
+    <tbody>
+
+    <tr ng-repeat="u in users">
+      <td>{{u.username}}</td>
+      <td>{{u.email}}</td>
+      <td>{{u.enabled}}</td>
+      <td ng-if="u.enabled">
+        <button class="btn btn-danger"  ng-click="delete(u.id)">Удалить
+        </button>
+      </td>
+      <td ng-if="!u.enabled">
+        <button class="btn btn-success"  ng-click="enable(u.id)">Восстановить
+        </button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
 </div>
 

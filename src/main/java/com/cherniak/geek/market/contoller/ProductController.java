@@ -4,6 +4,7 @@ import com.cherniak.geek.market.dto.PageDto;
 import com.cherniak.geek.market.dto.ProductDto;
 import com.cherniak.geek.market.exception.ResourceCreationException;
 import com.cherniak.geek.market.exception.ResourceNotFoundException;
+import com.cherniak.geek.market.model.Category;
 import com.cherniak.geek.market.model.Product;
 import com.cherniak.geek.market.service.CategoryService;
 import com.cherniak.geek.market.service.ProductService;
@@ -16,15 +17,19 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -69,6 +74,7 @@ public class ProductController {
     return productDto;
   }
 
+  @Secured({"ROLE_ADMIN"})
   @PutMapping(consumes = "application/json", produces = "application/json")
   public void update(@RequestBody @Validated Product product, BindingResult result) {
     if (result.hasErrors()) {
@@ -93,9 +99,52 @@ public class ProductController {
     productService.deleteAll();
   }
 
+  @Secured("ROLE_ADMIN")
   @DeleteMapping("/{id}")
+  @ResponseStatus(value = HttpStatus.NO_CONTENT)
   public void deleteById(@PathVariable Long id) {
     productService.deleteById(id);
+  }
+
+  @Secured("ROLE_ADMIN")
+  @PostMapping(consumes = "application/json", produces = "application/json")
+  public ProductDto create(@RequestBody @Validated ProductDto productDto, BindingResult result) {
+    if (result.hasErrors()) {
+      StringBuilder sb = new StringBuilder();
+      result.getFieldErrors().forEach(
+          fe -> {
+            String msg = fe.getDefaultMessage();
+            if (msg != null) {
+              if (!msg.startsWith(fe.getField())) {
+                msg = fe.getField() + " - " + msg;
+              }
+              sb.append(" Поле: ").append(msg);
+            }
+          });
+      throw new ResourceCreationException(sb.toString());
+    }
+    checkUserParameters(productDto);
+    String categoryTitle = productDto.getCategoryTitle();
+    Category category = categoryService.findByTitle(categoryTitle).orElseThrow(() ->
+        new ResourceCreationException(
+            String.format("Category with title %s not exists", categoryTitle)));
+    Product product = ProductDto.fromDto(productDto, category);
+    productService.save(product);
+    productDto.setId(product.getId());
+
+    return productDto;
+  }
+
+  private void checkUserParameters(ProductDto productDto) {
+    Long id = productDto.getId();
+    if (id != null && productService.existsById(id)) {
+      throw new ResourceCreationException(String.format("Product with id = %d already exists", id));
+    }
+    String title = productDto.getTitle();
+    if (productService.existsByTitle(title)) {
+      throw new ResourceCreationException(
+          String.format("Product with title %s already exists", title));
+    }
   }
 
 }

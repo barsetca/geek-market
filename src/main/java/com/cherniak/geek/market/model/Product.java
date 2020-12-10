@@ -26,6 +26,9 @@ public class Product {
     @Min(1)
     private Integer cost;
 
+    @Column(name = "deleted", nullable = false, columnDefinition = "bool default false")
+    private boolean deleted = true;
+
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;

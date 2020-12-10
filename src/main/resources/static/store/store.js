@@ -41,7 +41,7 @@ angular.module('app').controller('storeController',
 
       $scope.delete = function (productId) {
         $http({
-          url: contextPath + '/api/v1/admin/products/' + productId,
+          url: contextPath + '/api/v1/products/' + productId,
           method: 'DELETE'
         })
         .then(function (response) {
@@ -66,7 +66,7 @@ angular.module('app').controller('storeController',
       };
 
       $scope.submitCreateNewProduct = function () {
-        $http.post(contextPath + '/api/v1/admin/products', $scope.newProduct)
+        $http.post(contextPath + '/api/v1/products', $scope.newProduct)
         .then(function (response) {
           $scope.newProduct = null;
           $(".modal").modal("hide");
