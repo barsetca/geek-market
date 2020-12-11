@@ -12,10 +12,10 @@ DROP TABLE IF EXISTS users;
 CREATE TABLE IF NOT EXISTS users
 (
     id       bigserial PRIMARY KEY,
-    username varchar(50) NOT NULL,
-    password varchar(80) NOT NULL,
-    enabled    BOOLEAN DEFAULT TRUE  NOT NULL,
-    email    varchar(50) NOT NULL UNIQUE
+    username varchar(50)          NOT NULL,
+    password varchar(80)          NOT NULL,
+    enabled  BOOLEAN DEFAULT TRUE NOT NULL,
+    email    varchar(50)          NOT NULL UNIQUE
 );
 
 
@@ -55,9 +55,9 @@ CREATE TABLE IF NOT EXISTS categories
 CREATE TABLE IF NOT EXISTS products
 (
     id          bigserial PRIMARY KEY,
-    title       VARCHAR(255) UNIQUE NOT NULL,
+    title       VARCHAR(255) UNIQUE  NOT NULL,
     cost        INTEGER,
-    deleted     BOOLEAN DEFAULT FALSE NOT NULL,
+    present     BOOLEAN DEFAULT TRUE NOT NULL,
     category_id BIGINT REFERENCES categories (id)
 );
 

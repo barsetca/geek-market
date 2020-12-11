@@ -16,7 +16,7 @@ angular.module('app').controller('adminController', function ($scope, $http) {
   $scope.delete = function (userId) {
     console.log('user ' + userId);
     $http({
-      url: contextPath + '/api/v1/admin/users/' + userId,
+      url: contextPath + '/api/v1/profile/' + userId,
       method: 'DELETE'
     })
     .then(function (response) {

@@ -57,7 +57,7 @@ CREATE TABLE IF NOT EXISTS products
     id          bigserial PRIMARY KEY,
     title       VARCHAR(255) UNIQUE  NOT NULL,
     cost        INTEGER,
-    deleted     BOOLEAN DEFAULT FALSE NOT NULL,
+    present     BOOLEAN DEFAULT TRUE NOT NULL,
     category_id BIGINT REFERENCES categories (id)
 );
 

@@ -21,6 +21,7 @@ angular.module('app').controller('storeController',
             title: $scope.newFilter != null ? $scope.newFilter.title : '',
             min_cost: $scope.newFilter != null ? $scope.newFilter.min_cost : '',
             max_cost: $scope.newFilter != null ? $scope.newFilter.max_cost : '',
+            present: $scope.newFilter != null ? $scope.newFilter.present : '',
             categoriesId: $scope.newFilter != null
                 ? $scope.newFilter.categoriesId : [""]
           }
@@ -45,7 +46,17 @@ angular.module('app').controller('storeController',
           method: 'DELETE'
         })
         .then(function (response) {
-          $scope.filter($scope.Products.number + 1);
+          $scope.filter($scope.Products.totalPages);
+        });
+      };
+
+      $scope.doPresent = function (productId) {
+        $http({
+          url: contextPath + '/api/v1/products/' + productId,
+          method: 'PUT'
+        })
+        .then(function (response) {
+          $scope.filter($scope.Products.totalPages);
         });
       };
 
@@ -71,7 +82,19 @@ angular.module('app').controller('storeController',
           $scope.newProduct = null;
           $(".modal").modal("hide");
           alert('Добавлен новый продукт');
-          $scope.filter($scope.Products.totalPages + 1);
+          $scope.filter($scope.Products.totalPages);
+
+        });
+      };
+
+      $scope.submitCreateNewCategory = function () {
+        $http.post(contextPath + '/api/v1/categories', $scope.newCategory)
+        .then(function (response) {
+          $scope.newCategory = null;
+          $(".modal").modal("hide");
+          alert('Добавлена новая категория');
+          $scope.getAllCategories();
+          $scope.filter();
 
         });
       };

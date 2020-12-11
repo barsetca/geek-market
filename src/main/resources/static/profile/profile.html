@@ -70,6 +70,9 @@
         <button type="button" class="btn btn-lg btn-primary btn-block" data-toggle="modal"
                 data-target="#exampleModal">Изменить
         </button>
+        <button class="btn btn-lg btn-danger btn-block" ng-if="profile.enabled"
+                ng-click="delete(profile.id)">Удалить аккаунт
+        </button>
         <p class="mt-5 mb-3 text-muted">© VicherNick 2020</p>
       </div>
     </div>

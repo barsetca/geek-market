@@ -7,6 +7,7 @@ import com.cherniak.geek.market.jwt.JwtRequest;
 import com.cherniak.geek.market.jwt.JwtResponse;
 import com.cherniak.geek.market.model.User;
 import com.cherniak.geek.market.service.UserService;
+import java.util.NoSuchElementException;
 import javax.management.relation.RoleNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -32,16 +33,24 @@ public class AuthController {
 
   @PostMapping("/auth")
   public ResponseEntity<?> createAuthToken(@RequestBody JwtRequest jwtRequest) {
+    String username = jwtRequest.getUsername();
+
     try {
+      User user = userService.getByUsername(username).get();
+      if (!user.isEnabled()) {
+        return new ResponseEntity<>(
+            new MarketError(HttpStatus.UNAUTHORIZED.value(), "Account deleted"),
+            HttpStatus.UNAUTHORIZED);
+      }
       authenticationManager.authenticate(
           new UsernamePasswordAuthenticationToken(jwtRequest.getUsername(),
               jwtRequest.getPassword()));
-    } catch (BadCredentialsException ex) {
+    } catch (BadCredentialsException | NoSuchElementException ex) {
       return new ResponseEntity<>(
           new MarketError(HttpStatus.UNAUTHORIZED.value(), "Incorrect username or password"),
           HttpStatus.UNAUTHORIZED);
     }
-    UserDetails userDetails = userService.loadUserByUsername(jwtRequest.getUsername());
+    UserDetails userDetails = userService.loadUserByUsername(username);
     return getResponse(userDetails);
   }
 

@@ -41,10 +41,12 @@ public class ProductController {
   CategoryService categoryService;
 
   @GetMapping(produces = "application/json")
-  public Page<ProductDto> getAll(@RequestParam(defaultValue = "1", name = "page") Integer page,
+  public PageDto getAll(@RequestParam(defaultValue = "1", name = "page") Integer page,
       @RequestParam Map<String, String> params,
       @RequestParam(required = false) String[] categoriesId) {
     page = page < 1 ? 1 : page;
+
+    params.forEach((k, v) -> System.out.println(k + " - " + v));
 
     if (categoriesId != null && categoriesId.length != 0) {
       StringBuilder sb = new StringBuilder();
@@ -62,8 +64,7 @@ public class ProductController {
 
     Page<ProductDto> dtoPage = new PageImpl<>(productDtos, pageable, products.getTotalElements());
 
-    PageDto pageDto = new PageDto(dtoPage);
-    return new PageImpl<>(productDtos, pageable, products.getTotalElements());
+    return new PageDto(dtoPage);
   }
 
   @GetMapping(value = "/{id}", produces = "application/json")
@@ -94,17 +95,26 @@ public class ProductController {
     productService.save(product);
   }
 
-  @DeleteMapping
-  public void deleteAll() {
-    productService.deleteAll();
-  }
-
   @Secured("ROLE_ADMIN")
   @DeleteMapping("/{id}")
   @ResponseStatus(value = HttpStatus.NO_CONTENT)
   public void deleteById(@PathVariable Long id) {
-    productService.deleteById(id);
+    Product product = productService.findById(id)
+        .orElseThrow(() -> new ResourceNotFoundException("Product with id = " + id + " not exist"));
+    product.setPresent(false);
+    productService.save(product);
   }
+
+  @Secured("ROLE_ADMIN")
+  @PutMapping("/{id}")
+  @ResponseStatus(value = HttpStatus.NO_CONTENT)
+  public void doPresent(@PathVariable Long id) {
+    Product product = productService.findById(id)
+        .orElseThrow(() -> new ResourceNotFoundException("Product with id = " + id + " not exist"));
+    product.setPresent(true);
+    productService.save(product);
+  }
+
 
   @Secured("ROLE_ADMIN")
   @PostMapping(consumes = "application/json", produces = "application/json")

@@ -33,6 +33,7 @@ public class ProfileDto {
   @Size(min = 2)
   private String username;
   private Long userId;
+  private boolean enabled;
 
   public ProfileDto(Profile profile) {
     this.id = profile.getId();
@@ -45,6 +46,7 @@ public class ProfileDto {
     this.email = profile.getUser().getEmail();
     this.username = profile.getUser().getUsername();
     this.userId = profile.getUser().getId();
+    this.enabled = profile.getUser().isEnabled();
   }
 
   public static Profile profileFromDto(ProfileDto profileDto) {
@@ -57,7 +59,6 @@ public class ProfileDto {
     profile.setPhone(profileDto.getPhone());
     profile.setSex(profileDto.getSex());
     return profile;
-
   }
 
 }

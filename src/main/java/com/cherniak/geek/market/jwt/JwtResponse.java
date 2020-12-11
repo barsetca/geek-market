@@ -16,6 +16,6 @@ public class JwtResponse {
   public JwtResponse(String token, Collection<? extends GrantedAuthority> roles) {
     this.token = token;
 
-    this.roles = roles.stream().map(role -> role.getAuthority()).collect(Collectors.toList());
+    this.roles = roles.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
   }
 }
