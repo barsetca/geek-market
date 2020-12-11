@@ -60,9 +60,11 @@ public class ProductController {
   }
 
   @GetMapping(value = "/{id}", produces = "application/json")
-  public Product getById(@PathVariable Long id) {
-    return productService.findById(id).orElseThrow(
+  public ProductDto getById(@PathVariable Long id) {
+    Product product = productService.findById(id).orElseThrow(
         () -> new ResourceNotFoundException(String.format("Product with id = %d not exists", id)));
+    ProductDto productDto = new ProductDto(product);
+    return productDto;
   }
 
   @PostMapping(consumes = "application/json", produces = "application/json")

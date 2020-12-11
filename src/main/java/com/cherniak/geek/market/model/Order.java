@@ -64,4 +64,16 @@ public class Order {
         });
         cart.clear();
     }
+
+
+    public String toString() {
+        return "Order{" +
+            "id=" + id +
+            ", date=" + date +
+            ", cost=" + cost +
+            ", receiver='" + receiver + '\'' +
+            ", phone='" + phone + '\'' +
+            ", address='" + address + '\'' +
+            '}';
+    }
 }

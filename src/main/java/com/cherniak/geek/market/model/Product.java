@@ -39,4 +39,13 @@ public class Product {
         this.title = title;
         this.cost = cost;
     }
+
+
+    public String toString() {
+        return "Product{" +
+            "id=" + id +
+            ", title='" + title + '\'' +
+            ", cost=" + cost +
+            '}';
+    }
 }

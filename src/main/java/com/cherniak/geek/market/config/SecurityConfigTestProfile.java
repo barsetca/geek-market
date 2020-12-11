@@ -13,8 +13,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @EnableWebSecurity //(debug = true)
 @RequiredArgsConstructor
-@Profile("!test")
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+@Profile("test")
+public class SecurityConfigTestProfile extends WebSecurityConfigurerAdapter {
 
   private final JwtRequestFilter jwtRequestFilter;
 
@@ -22,18 +22,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   protected void configure(HttpSecurity http) throws Exception {
 
     http.authorizeRequests()
-        .antMatchers("/api/v1/**").authenticated()
-    .antMatchers("/h2-console/**").permitAll()
         .anyRequest().permitAll()
         .and()
         .csrf().disable()
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
-
-
-//        .antMatchers("/orders/**").authenticated()
-//        .antMatchers("/admin/**").hasAnyRole("ADMIN")
-//        .antMatchers("/director/").hasAnyAuthority("EXCLUSIVE")
         http.headers().frameOptions().disable();
   }
 
