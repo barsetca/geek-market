@@ -52,10 +52,15 @@ public class OrderController {
     User user = userService.getByUsername(username).orElseThrow(() -> new UsernameNotFoundException(
         String.format("User by username %s not exists", username)));
 
-    orderService.save(new Order(user, cart, order.getReceiver(), order.getPhone(),
-        order.getAddress()));
+    Order orderForSave = new Order()
+            .withAddress(order.getAddress())
+            .withPhone(order.getPhone())
+            .withReceiver(order.getReceiver())
+            .fromUser(user)
+            .withCart(cart);
 
-    cart.clear();
+    orderService.save(orderForSave);
+
 
   }
 }

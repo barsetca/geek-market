@@ -51,6 +51,38 @@ public class Order {
     @JoinColumn(name = "user_id")
     private User user;
 
+
+    public Order withReceiver(String receiver) {
+        this.receiver = receiver;
+        return this;
+    }
+
+    public Order withPhone(String phone) {
+        this.phone = phone;
+        return this;
+    }
+
+    public Order withAddress(String address) {
+        this.address = address;
+        return this;
+    }
+
+    public Order withCart(Cart cart) {
+        this.cost = cart.getPrice();
+        this.items = new ArrayList<>();
+        cart.getItems().forEach(io -> {
+            io.setOrder(this);
+            items.add(io);
+        });
+        cart.clear();
+        return this;
+    }
+
+    public Order fromUser(User user) {
+        this.user = user;
+        return this;
+    }
+
     public Order(User user, Cart cart, String receiver, String phone, String address) {
         this.phone = phone;
         this.address = address;
