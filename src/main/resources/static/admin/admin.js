@@ -1,26 +1,39 @@
 angular.module('app').controller('adminController', function ($scope, $http) {
-    const contextPath = 'http://localhost:8189/market';
+  const contextPath = 'http://localhost:8189/market';
 
-    $scope.getAllCategories = function () {
-        console.log('getAllCategories');
-        $http({
-            url: contextPath + '/api/v1/categories',
-            method: 'GET'
-        })
-            .then(function (response) {
-                console.log(response.data);
-                $scope.categories = response.data;
-            });
-    };
+  $scope.getAllUsers = function () {
+    console.log('getAllUsers');
+    $http({
+      url: contextPath + '/api/v1/admin/users',
+      method: 'GET'
+    })
+    .then(function (response) {
+      console.log(response.data);
+      $scope.users = response.data;
+    });
+  };
 
-    $scope.submitCreateNewProduct = function () {
-        $http.post(contextPath + '/api/v1/products', $scope.newProduct)
-            .then(function (response) {
-                $scope.newProduct = null;
-                alert('Добавлен новый продукт');
-            });
-    };
+  $scope.delete = function (userId) {
+    console.log('user ' + userId);
+    $http({
+      url: contextPath + '/api/v1/profile/' + userId,
+      method: 'DELETE'
+    })
+    .then(function (response) {
+      $scope.getAllUsers();
+    });
+  };
 
-    $scope.getAllCategories();
+  $scope.enable = function (userId) {
+    console.log('user ' + userId);
+    $http({
+      url: contextPath + '/api/v1/admin/users/' + userId,
+      method: 'PUT'
+    })
+    .then(function (response) {
+      $scope.getAllUsers();
+    });
+  };
+  $scope.getAllUsers();
 
 });

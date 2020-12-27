@@ -1,5 +1,6 @@
 package com.cherniak.geek.market.contoller;
 
+import com.cherniak.geek.market.dto.PageDto;
 import com.cherniak.geek.market.dto.ProductDto;
 import com.cherniak.geek.market.exception.ResourceCreationException;
 import com.cherniak.geek.market.exception.ResourceNotFoundException;
@@ -16,6 +17,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -26,6 +29,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -37,10 +41,12 @@ public class ProductController {
   CategoryService categoryService;
 
   @GetMapping(produces = "application/json")
-  public Page<ProductDto> getAll(@RequestParam(defaultValue = "1", name = "page") Integer page,
+  public PageDto getAll(@RequestParam(defaultValue = "1", name = "page") Integer page,
       @RequestParam Map<String, String> params,
       @RequestParam(required = false) String[] categoriesId) {
     page = page < 1 ? 1 : page;
+
+    params.forEach((k, v) -> System.out.println(k + " - " + v));
 
     if (categoriesId != null && categoriesId.length != 0) {
       StringBuilder sb = new StringBuilder();
@@ -56,7 +62,9 @@ public class ProductController {
         .collect(Collectors.toList());
     Pageable pageable = PageRequest.of(page - 1, 5);
 
-    return new PageImpl<>(productDtos, pageable, products.getTotalElements());
+    Page<ProductDto> dtoPage = new PageImpl<>(productDtos, pageable, products.getTotalElements());
+
+    return new PageDto(dtoPage);
   }
 
   @GetMapping(value = "/{id}", produces = "application/json")
@@ -67,42 +75,7 @@ public class ProductController {
     return productDto;
   }
 
-  @PostMapping(consumes = "application/json", produces = "application/json")
-  public ProductDto create(@RequestBody @Validated ProductDto productDto, BindingResult result) {
-    if (result.hasErrors()) {
-      StringBuilder sb = new StringBuilder();
-      result.getFieldErrors().forEach(
-          fe -> {
-            String msg = fe.getDefaultMessage();
-            if (msg != null) {
-              if (!msg.startsWith(fe.getField())) {
-                msg = fe.getField() + " - " + msg;
-              }
-              sb.append(" Поле: ").append(msg);
-            }
-          });
-      throw new ResourceCreationException(sb.toString());
-    }
-    Long id = productDto.getId();
-    if (id != null && productService.existsById(id)) {
-      throw new ResourceCreationException(String.format("Product with id = %d already exists", id));
-    }
-    String title = productDto.getTitle();
-    if (productService.existsByTitle(title)) {
-      throw new ResourceCreationException(
-          String.format("Product with title %s already exists", title));
-    }
-    String categoryTitle = productDto.getCategoryTitle();
-    Category category = categoryService.findByTitle(categoryTitle).orElseThrow(() ->
-        new ResourceCreationException(
-            String.format("Category with title %s not exists", categoryTitle)));
-    Product product = ProductDto.fromDto(productDto, category);
-    productService.save(product);
-    productDto.setId(product.getId());
-
-    return productDto;
-  }
-
+  @Secured({"ROLE_ADMIN"})
   @PutMapping(consumes = "application/json", produces = "application/json")
   public void update(@RequestBody @Validated Product product, BindingResult result) {
     if (result.hasErrors()) {
@@ -122,14 +95,66 @@ public class ProductController {
     productService.save(product);
   }
 
-  @DeleteMapping
-  public void deleteAll() {
-    productService.deleteAll();
+  @Secured("ROLE_ADMIN")
+  @DeleteMapping("/{id}")
+  @ResponseStatus(value = HttpStatus.NO_CONTENT)
+  public void deleteById(@PathVariable Long id) {
+    Product product = productService.findById(id)
+        .orElseThrow(() -> new ResourceNotFoundException("Product with id = " + id + " not exist"));
+    product.setPresent(false);
+    productService.save(product);
   }
 
-  @DeleteMapping("/{id}")
-  public void deleteById(@PathVariable Long id) {
-    productService.deleteById(id);
+  @Secured("ROLE_ADMIN")
+  @PutMapping("/{id}")
+  @ResponseStatus(value = HttpStatus.NO_CONTENT)
+  public void doPresent(@PathVariable Long id) {
+    Product product = productService.findById(id)
+        .orElseThrow(() -> new ResourceNotFoundException("Product with id = " + id + " not exist"));
+    product.setPresent(true);
+    productService.save(product);
+  }
+
+
+  @Secured("ROLE_ADMIN")
+  @PostMapping(consumes = "application/json", produces = "application/json")
+  public ProductDto create(@RequestBody @Validated ProductDto productDto, BindingResult result) {
+    if (result.hasErrors()) {
+      StringBuilder sb = new StringBuilder();
+      result.getFieldErrors().forEach(
+          fe -> {
+            String msg = fe.getDefaultMessage();
+            if (msg != null) {
+              if (!msg.startsWith(fe.getField())) {
+                msg = fe.getField() + " - " + msg;
+              }
+              sb.append(" Поле: ").append(msg);
+            }
+          });
+      throw new ResourceCreationException(sb.toString());
+    }
+    checkUserParameters(productDto);
+    String categoryTitle = productDto.getCategoryTitle();
+    Category category = categoryService.findByTitle(categoryTitle).orElseThrow(() ->
+        new ResourceCreationException(
+            String.format("Category with title %s not exists", categoryTitle)));
+    Product product = ProductDto.fromDto(productDto, category);
+    productService.save(product);
+    productDto.setId(product.getId());
+
+    return productDto;
+  }
+
+  private void checkUserParameters(ProductDto productDto) {
+    Long id = productDto.getId();
+    if (id != null && productService.existsById(id)) {
+      throw new ResourceCreationException(String.format("Product with id = %d already exists", id));
+    }
+    String title = productDto.getTitle();
+    if (productService.existsByTitle(title)) {
+      throw new ResourceCreationException(
+          String.format("Product with title %s already exists", title));
+    }
   }
 
 }

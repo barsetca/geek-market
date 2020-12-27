@@ -72,30 +72,52 @@
 
 })();
 
-angular.module('app').controller('indexController', function ($scope, $http, $localStorage){
-  const contextPath = 'http://localhost:8189/market';
+angular.module('app').controller('indexController',
+    function ($scope, $http, $localStorage) {
+      const contextPath = 'http://localhost:8189/market';
 
-$scope.isUserLoggedIn = function (){
-  if($localStorage.currentUser){
-    return true;
-  } else {
-    return false
-  }
-};
+      $scope.isUserLoggedIn = function () {
 
-  $scope.tryToLogout = function () {
-    console.log('tryToLogout')
-    $scope.clearUser();
-    if ($scope.user.username) {
-      $scope.user.username = null;
-    }
-    if ($scope.user.password) {
-      $scope.user.password = null;
-    }
-  };
+        if ($localStorage.currentUser) {
+          return true;
+        } else {
+          return false
+        }
+      };
 
-  $scope.clearUser = function () {
-    delete $localStorage.currentUser;
-    $http.defaults.headers.common.Authorization = '';
-  };
-});
+      $scope.isAdmin = function () {
+        if ($localStorage.currentUser) {
+          var arr = $localStorage.currentUser.roles;
+          for (var i = 0; i < arr.length; i++) {
+            if ($localStorage.currentUser.roles[0] === 'ROLE_ADMIN') {
+              return true;
+            }
+          }
+          return false;
+        } else {
+          return false
+        }
+      };
+
+      $scope.tryToLogout = function () {
+        console.log('tryToLogout')
+        console.log($http.defaults.headers.common.Authorization)
+        $scope.clearUser();
+        if ($localStorage.currentUser) {
+          if ($scope.user.username) {
+            $scope.user.username = null;
+          }
+          if ($scope.user.password) {
+            $scope.user.password = null;
+          }
+        }
+
+        console.log(window.location)
+        window.location.href = contextPath + '/#!/auth';
+      };
+
+      $scope.clearUser = function () {
+        delete $localStorage.currentUser;
+        $http.defaults.headers.common.Authorization = '';
+      };
+    });

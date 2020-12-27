@@ -2,14 +2,16 @@ package com.cherniak.geek.market;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 
 @SpringBootApplication
+@EnableGlobalMethodSecurity(
+    prePostEnabled = true,
+    securedEnabled = true,
+    jsr250Enabled = true)
 public class GeekMarketApplication {
 
   public static void main(String[] args) {
     SpringApplication.run(GeekMarketApplication.class, args);
-    // Домашнее задание:
-    // 1. Личный кабинет пользователя с отображением профиля (имя, фамилия, телефон, email, год рождения, пол, город проживания)
-    // 2. Дать возможность изменять профиль (с подтверждением паролем)
   }
 }

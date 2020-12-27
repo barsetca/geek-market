@@ -25,6 +25,12 @@
       <label for="filterMaxCost">Максимальная цена</label>
       <input class="form-control" type="number" ng-model="newFilter.max_cost" id="filterMaxCost">
     </div>
+    <div class="form-check">
+      <input type="checkbox" class="form-check-input" ng-model="newFilter.present"
+             id="exampleCheck1">
+      <label class="form-check-label" for="exampleCheck1">Только в наличии</label>
+    </div>
+    <hr/>
     <div>
       <button class="btn btn-success" type="submit">Фильтровать</button>
       <button class="btn btn-secondary" ng-click="clearFilter()">Очистить</button>
@@ -33,12 +39,23 @@
   </form>
   <hr/>
   <h3>Товары</h3>
+
+  <button type="button" class="btn btn-success" ng-if="isAdmin()" data-toggle="modal"
+          data-target="#exampleModal">Добавить новый товар
+  </button>
+
+  <button type="button" class="btn btn-success" ng-if="isAdmin()" data-toggle="modal"
+          data-target="#categoryModal">Добавить категорию
+  </button>
+  <hr/>
+
   <table class="table table-hover" cellpadding="0" cellspacing="0">
     <thead class="thead-light">
     <tr>
       <th>Категория</th>
       <th>Товар</th>
       <th>Цена</th>
+      <th></th>
       <th></th>
     </tr>
     </thead>
@@ -48,8 +65,19 @@
       <td>{{p.categoryTitle}}</td>
       <td>{{p.title}}</td>
       <td>{{p.cost}}</td>
-      <td>
+      <td ng-if="p.present">
         <button class="btn btn-success" ng-click="addToCart(p.id)">Добавить в корзину</button>
+      </td>
+      <td ng-if="!p.present">
+        Нет в наличии
+      </td>
+      <td ng-if="p.present">
+        <button class="btn btn-danger" ng-if="isAdmin()" ng-click="delete(p.id)">Удалить товар
+        </button>
+      </td>
+      <td ng-if="!p.present">
+        <button class="btn btn-danger" ng-if="isAdmin()" ng-click="doPresent(p.id)">Восстановить
+        </button>
       </td>
     </tr>
     </tbody>
@@ -69,4 +97,80 @@
       </li>
     </ul>
   </nav>
+
+
+  <div class="modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+       aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Добавить новый товар</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form name="myForm" novalidate ng-submit="submitCreateNewProduct()">
+            <div class="form-group col-md-10">
+              <label for="exampleFormControlSelect1">Категория</label>
+              <select class="form-control" type="text" required id="exampleFormControlSelect1"
+                      ng-model="newProduct.categoryTitle">
+                <option ng-repeat="c in categories">{{c.title}}</option>
+              </select>
+            </div>
+            <div class="form-group col-md-10">
+              <label for="elementTitle">Название</label>
+              <input class="form-control" type="text" required ng-model="newProduct.title"
+                     id="elementTitle">
+            </div>
+            <div class="form-group col-md-10">
+              <label for="elementPrice">Цена</label>
+              <input class="form-control" type="number" required ng-model="newProduct.cost"
+                     id="elementPrice">
+            </div>
+            <div class="modal-footer">
+
+              <button class="btn btn-success" ng-disabled="myForm.$invalid" type="submit">Добавить
+              </button>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Отменить</button>
+            </div>
+            <!--            <div>-->
+            <!--              <button class="btn btn-success" type="submit">Сохранить</button>-->
+            <!--            </div>-->
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="categoryModal" tabindex="-1" aria-labelledby="categoryModalLabel"
+       aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="categoryModalLabel">Добавить новый товар</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form name="myFormCategory" novalidate ng-submit="submitCreateNewCategory()">
+            <div class="form-group col-md-10">
+              <label for="categoryTitle">Название</label>
+              <input class="form-control" type="text" required ng-model="newCategory.title"
+                     id="categoryTitle">
+            </div>
+            <div class="modal-footer">
+
+              <button class="btn btn-success" ng-disabled="myFormCategory.$invalid" type="submit">
+                Добавить
+              </button>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Отменить</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>

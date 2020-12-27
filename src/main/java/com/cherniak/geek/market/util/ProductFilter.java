@@ -27,6 +27,11 @@ public class ProductFilter {
       int max = Integer.parseInt(maxCost);
       spec = spec.and(ProductSpecification.costLessOrEqualsThan(max));
     }
+    String present = params.get("present");
+    if (params.containsKey("present") && !present.isBlank() && "true".equals(present)) {
+      spec = spec.and(ProductSpecification.isPresent());
+    }
+
     String titlePart = params.get("title");
     if (params.containsKey("title") && !titlePart.isBlank()) {
       spec = spec.and(ProductSpecification.titleLike(titlePart));

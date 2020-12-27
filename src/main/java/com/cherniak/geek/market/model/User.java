@@ -42,6 +42,9 @@ public class User {
   @Size(min = 2)
   private String password;
 
+  @Column(name = "enabled", nullable = false, columnDefinition = "bool default true")
+  private boolean enabled = true;
+
   @Column(name = "email", unique = true)
   @Email
   private String email;

@@ -6,7 +6,6 @@ import com.cherniak.geek.market.dto.CategoryDto;
 import com.cherniak.geek.market.dto.CategoryListContainer;
 import com.cherniak.geek.market.dto.ProductDto;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -44,22 +43,38 @@ public class ServerTest {
 
   @Test
     // @WithMockUser(username = "admin", authorities = "ADMIN")
-  void getAllCategoriesFromArray() {
-    CategoryDto[] categoryDtos = restTemplate
-        .getForObject("/api/v1/categories", CategoryDto[].class);
-    assertThat(categoryDtos).isNotNull();
-
-    List<CategoryDto> categoryDtoList = new ArrayList<>(Arrays.asList(categoryDtos));
-    categoryDtoList.forEach(System.out::println);
-
+  void getAllCategoriesFromList() {
+    List<CategoryDto> categoryDtoList = restTemplate
+        .getForObject("/api/v1/categories", List.class);
     assertThat(categoryDtoList).isNotNull();
     assertThat(categoryDtoList).hasSize(3);
 
-    ResponseEntity<CategoryDto[]> entity = restTemplate
-        .getForEntity("/api/v1/categories", CategoryDto[].class);
+    System.out.println(categoryDtoList);
+
+    ResponseEntity<List> entity = restTemplate
+        .getForEntity("/api/v1/categories", List.class);
     Assertions.assertSame(entity.getStatusCode(), HttpStatus.OK);
 
   }
+
+//  @Test
+//    // @WithMockUser(username = "admin", authorities = "ADMIN")
+//  void getAllCategoriesFromArray() {
+//    CategoryDto[] categoryDtos = restTemplate
+//        .getForObject("/api/v1/categories", CategoryDto[].class);
+//    assertThat(categoryDtos).isNotNull();
+//
+//    List<CategoryDto> categoryDtoList = new ArrayList<>(Arrays.asList(categoryDtos));
+//    categoryDtoList.forEach(System.out::println);
+//
+//    assertThat(categoryDtoList).isNotNull();
+//    assertThat(categoryDtoList).hasSize(3);
+//
+//    ResponseEntity<CategoryDto[]> entity = restTemplate
+//        .getForEntity("/api/v1/categories", CategoryDto[].class);
+//    Assertions.assertSame(entity.getStatusCode(), HttpStatus.OK);
+//
+//  }
 
   @Test
     //@WithMockUser(username = "admin", authorities = "ADMIN")
