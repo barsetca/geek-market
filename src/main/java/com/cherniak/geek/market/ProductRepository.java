@@ -1,6 +1,6 @@
-package com.cherniak.geek.market.repository;
+package com.cherniak.geek.market;
 
-import com.cherniak.geek.market.model.Product;
+import com.cherniak.geek.market.Product;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

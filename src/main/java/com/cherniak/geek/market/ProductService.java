@@ -1,7 +1,7 @@
-package com.cherniak.geek.market.service;
+package com.cherniak.geek.market;
 
-import com.cherniak.geek.market.model.Product;
-import com.cherniak.geek.market.repository.ProductRepository;
+import com.cherniak.geek.market.Product;
+import com.cherniak.geek.market.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

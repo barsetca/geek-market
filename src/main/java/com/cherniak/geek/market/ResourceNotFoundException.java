@@ -1,4 +1,4 @@
-package com.cherniak.geek.market.exception;
+package com.cherniak.geek.market;
 
 public class ResourceNotFoundException extends RuntimeException {
 

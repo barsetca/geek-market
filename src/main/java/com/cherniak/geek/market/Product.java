@@ -1,4 +1,4 @@
-package com.cherniak.geek.market.model;
+package com.cherniak.geek.market;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
