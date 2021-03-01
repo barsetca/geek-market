@@ -3,13 +3,12 @@ package com.cherniak.geek.market.contoller;
 import com.cherniak.geek.market.dto.UserDto;
 import com.cherniak.geek.market.exception.ResourceNotFoundException;
 import com.cherniak.geek.market.model.User;
-import com.cherniak.geek.market.service.CategoryService;
-import com.cherniak.geek.market.service.ProductService;
 import com.cherniak.geek.market.service.UserService;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -45,6 +44,4 @@ public class UserController {
     user.setEnabled(true);
     service.save(user);
   }
-
-
 }

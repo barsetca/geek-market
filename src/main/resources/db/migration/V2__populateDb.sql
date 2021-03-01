@@ -9,7 +9,11 @@ FROM categories;
 DELETE
 FROM users_roles;
 DELETE
+FROM roles_authorities;
+DELETE
 FROM roles;
+DELETE
+FROM authorities;
 DELETE
 FROM profiles;
 DELETE
@@ -96,16 +100,37 @@ VALUES ('Product1', 100, 1),
 INSERT INTO roles (name)
 VALUES ('ROLE_USER'),
        ('ROLE_ADMIN'),
-       ('EXCLUSIVE');
+       ('ROLE_EXCLUSIVE');
+
+INSERT INTO authorities (name)
+VALUES ('SUPERUSER'),
+       ('READER'),
+       ('WRITER'),
+       ('EDITOR');
 
 INSERT INTO users (username, password, email)
 VALUES ('user', '$2y$12$bA7N3xIrk9E4PtgKJGG9TOagHvouaoUFkiXBsgHtZmUbyUhnQgdHq', 'user@user.ru'),
-       ('admin', '$2y$12$plJkmvCZlSLWOLSe7V4rCOOokMSa20cznpdFYaBuPUCY3s6z18Hm.', 'admin@admin.com');
+       ('admin', '$2y$12$plJkmvCZlSLWOLSe7V4rCOOokMSa20cznpdFYaBuPUCY3s6z18Hm.', 'admin@admin.com'),
+       ('superadmin', '$2y$12$plJkmvCZlSLWOLSe7V4rCOOokMSa20cznpdFYaBuPUCY3s6z18Hm.', 'super@admin.com');
 
 INSERT INTO users_roles (user_id, role_id)
 VALUES (1, 1),
        (2, 1),
-       (2, 2);
+       (2, 2),
+       (3, 1),
+       (3, 2),
+       (3, 3);
+
+INSERT INTO roles_authorities (role_id, authority_id)
+VALUES (1, 2),
+       (1, 3),
+       (2, 2),
+       (2, 3),
+       (2, 4),
+       (3, 1),
+       (3, 2),
+       (3, 3),
+       (3, 4);
 
 INSERT INTO profiles (firstname, surname, phone, sex, city, user_id)
 VALUES ('Ivan', 'Ivanov', '+7(921)999-99-99', 'male', 'Ivangorod', 1),
