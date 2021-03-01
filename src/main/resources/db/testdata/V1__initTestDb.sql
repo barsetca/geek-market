@@ -25,6 +25,12 @@ CREATE TABLE IF NOT EXISTS roles
     name varchar(50) NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS authorities
+(
+    id   bigserial PRIMARY KEY,
+    name varchar(50) NOT NULL
+    );
+
 CREATE TABLE IF NOT EXISTS users_roles
 (
     user_id bigint,
@@ -33,6 +39,15 @@ CREATE TABLE IF NOT EXISTS users_roles
     FOREIGN KEY (user_id) REFERENCES users (id),
     FOREIGN KEY (role_id) REFERENCES roles (id)
 );
+
+CREATE TABLE IF NOT EXISTS roles_authorities
+(
+    authority_id bigint,
+    role_id bigint,
+    primary key (authority_id, role_id),
+    FOREIGN KEY (authority_id) REFERENCES authorities (id),
+    FOREIGN KEY (role_id) REFERENCES roles (id)
+    );
 
 CREATE TABLE IF NOT EXISTS profiles
 (

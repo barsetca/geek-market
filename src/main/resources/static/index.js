@@ -89,7 +89,7 @@ angular.module('app').controller('indexController',
         if ($localStorage.currentUser) {
           var arr = $localStorage.currentUser.roles;
           for (var i = 0; i < arr.length; i++) {
-            if ($localStorage.currentUser.roles[0] === 'ROLE_ADMIN') {
+            if ($localStorage.currentUser.roles[2] === 'ROLE_ADMIN') {
               return true;
             }
           }

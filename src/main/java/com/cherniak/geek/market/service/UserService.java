@@ -4,11 +4,8 @@ import com.cherniak.geek.market.model.Profile;
 import com.cherniak.geek.market.model.Role;
 import com.cherniak.geek.market.model.User;
 import com.cherniak.geek.market.repository.UserRepository;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+
+import java.util.*;
 import java.util.stream.Collectors;
 import javax.management.relation.RoleNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -75,7 +72,13 @@ public class UserService implements UserDetailsService {
   }
 
   private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) {
-    return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName()))
-        .collect(Collectors.toList());
+    List<GrantedAuthority> authorities = new ArrayList<>();
+    for (Role role: roles) {
+      authorities.add(new SimpleGrantedAuthority(role.getName()));
+      role.getAuthorities().stream()
+              .map(p -> new SimpleGrantedAuthority(p.getName()))
+              .forEach(authorities::add);
+    }
+    return authorities;
   }
 }

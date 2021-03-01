@@ -3,7 +3,9 @@ DROP TABLE IF EXISTS orders;
 DROP TABLE IF EXISTS products;
 DROP TABLE IF EXISTS categories;
 DROP TABLE IF EXISTS users_roles;
+DROP TABLE IF EXISTS roles_authorities;
 DROP TABLE IF EXISTS roles;
+DROP TABLE IF EXISTS authorities;
 DROP TABLE IF EXISTS profiles;
 DROP TABLE IF EXISTS users;
 
@@ -18,8 +20,13 @@ CREATE TABLE IF NOT EXISTS users
     email    varchar(50)          NOT NULL UNIQUE
 );
 
-
 CREATE TABLE IF NOT EXISTS roles
+(
+    id   bigserial PRIMARY KEY,
+    name varchar(50) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS authorities
 (
     id   bigserial PRIMARY KEY,
     name varchar(50) NOT NULL
@@ -33,6 +40,16 @@ CREATE TABLE IF NOT EXISTS users_roles
     FOREIGN KEY (user_id) REFERENCES users (id),
     FOREIGN KEY (role_id) REFERENCES roles (id)
 );
+
+CREATE TABLE IF NOT EXISTS roles_authorities
+(
+    role_id bigint,
+    authority_id bigint,
+    primary key (role_id, authority_id),
+    FOREIGN KEY (role_id) REFERENCES roles (id),
+    FOREIGN KEY (authority_id) REFERENCES authorities (id)
+);
+
 
 CREATE TABLE IF NOT EXISTS profiles
 (
